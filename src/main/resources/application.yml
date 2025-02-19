@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: infomed
+  output:
+    ansi:
+      enabled: ALWAYS
+  datasource:
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5433/infomed}
+    username: ${DATASOURCE_USERNAME:postgres}
+    password: ${DATASOURCE_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate.format_sql: true
