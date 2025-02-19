@@ -1,17 +1,21 @@
 package io.github.cristian_eds.InfoMed.controller;
 
 import io.github.cristian_eds.InfoMed.controller.dto.UserDTO;
+import io.github.cristian_eds.InfoMed.controller.service.UserService;
 import io.github.cristian_eds.InfoMed.models.User;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
 @RestController
 @RequestMapping("users")
+@RequiredArgsConstructor
 public class UserController {
+
+    private final UserService userService;
 
     @GetMapping("/test")
     public ResponseEntity<User>  test() {
@@ -20,6 +24,12 @@ public class UserController {
         test.setPassword("test");
         test.setEmail("test");
         return ResponseEntity.ok(test);
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> create(@RequestBody @Valid UserDTO userDTO) {
+        userService.createUser(UserDTO.toEntity(userDTO));
+        return ResponseEntity.ok().build();
     }
 
 }

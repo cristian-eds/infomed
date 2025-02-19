@@ -1,5 +1,6 @@
 package io.github.cristian_eds.InfoMed.controller.dto;
 
+import io.github.cristian_eds.InfoMed.models.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -13,4 +14,11 @@ public record UserDTO(
         @Size(max = 300)
                 @NotBlank(message = "Insert an valid password.")
         String password) {
+
+    public static User toEntity(UserDTO userDTO) {
+        User user = new User();
+        user.setEmail(userDTO.email);
+        user.setPassword(userDTO.password);
+        return user;
+    }
 }
