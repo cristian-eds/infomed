@@ -1,5 +1,6 @@
 package io.github.cristian_eds.InfoMed.controller;
 
+import io.github.cristian_eds.InfoMed.controller.dto.UserDTO;
 import io.github.cristian_eds.InfoMed.models.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,4 +21,5 @@ public class UserController {
         test.setEmail("test");
         return ResponseEntity.ok(test);
     }
+
 }
