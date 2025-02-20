@@ -1,7 +1,7 @@
 package io.github.cristian_eds.InfoMed.controller;
 
 import io.github.cristian_eds.InfoMed.controller.dto.UserDTO;
-import io.github.cristian_eds.InfoMed.controller.service.UserService;
+import io.github.cristian_eds.InfoMed.service.UserService;
 import io.github.cristian_eds.InfoMed.models.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

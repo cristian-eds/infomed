@@ -1,4 +1,4 @@
-package io.github.cristian_eds.InfoMed.controller.service;
+package io.github.cristian_eds.InfoMed.service;
 
 import io.github.cristian_eds.InfoMed.models.User;
 import io.github.cristian_eds.InfoMed.repository.UserRepository;
