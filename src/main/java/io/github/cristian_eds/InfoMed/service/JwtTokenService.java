@@ -1,7 +1,9 @@
 package io.github.cristian_eds.InfoMed.service;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -9,22 +11,31 @@ import java.util.Date;
 @Service
 public class JwtTokenService {
 
-    private static final String SECRET_KEY = "secret";
+    @Value("${api.security.token.secret}")
+    private String SECRET_KEY;
 
     public String generateToken(String login) {
-        return Jwts.builder()
-                .setSubject(login)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1800000)) // Valid for 30 min
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
-                .compact();
+
+        Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
+        return JWT.create()
+                .withIssuer("infomed")
+                .withSubject(login)
+                .withExpiresAt(new Date(System.currentTimeMillis() + 1800000))
+                .sign(algorithm);
     }
 
-    public String getUsernameFromToken(String token) {
-        return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+    public String validateToken(String token) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
+            return JWT.require(algorithm)
+                    .withIssuer("infomed")
+                    .build()
+                    .verify(token)
+                    .getSubject();
+
+
+        } catch (JWTVerificationException excetionp) {
+            return "";
+        }
     }
 }

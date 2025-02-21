@@ -17,7 +17,8 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody LoginDTO loginDTO) {
-        return null;
+    public ResponseEntity<Object> login(@RequestBody LoginDTO loginDTO) {
+        var token =  authService.login(loginDTO.email(), loginDTO.password());
+        return ResponseEntity.ok(token);
     }
 }
