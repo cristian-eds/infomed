@@ -7,6 +7,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -36,5 +37,8 @@ public class Medicine {
 
     @LastModifiedDate
     private LocalDateTime atualizationDate;
+
+    @OneToMany(mappedBy = "medicine")
+    private List<MedicineItem> medicineItems;
 
 }

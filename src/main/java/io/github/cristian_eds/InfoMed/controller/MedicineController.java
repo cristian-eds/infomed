@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("/medicine")
 @RequiredArgsConstructor
@@ -21,8 +23,10 @@ public class MedicineController {
 
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody @Valid CreateMedicineDTO createMedicineDTO) {
+        LocalDateTime initialLocalDateTime = LocalDateTime.parse(createMedicineDTO.initialDateTime());
+
         Medicine medicine = CreateMedicineDTO.toEntity(createMedicineDTO);
-        Medicine medicineSaved = medicineService.create(medicine);
+        Medicine medicineSaved = medicineService.create(medicine,initialLocalDateTime);
         return ResponseEntity.ok(medicineSaved);
     }
 }

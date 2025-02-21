@@ -5,12 +5,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record CreateMedicineDTO(
-        @NotBlank(message = "Insert an valid name")
+        @NotBlank(message = "Insert a valid name")
         String name,
-        @NotNull(message = "Insert an valid total days")
+        @NotNull(message = "Insert a valid total days")
         Double totalDays,
-        @NotNull(message = "Insert an valid frequency")
-        Double frequencyHours
+        @NotNull(message = "Insert a valid frequency")
+        Double frequencyHours,
+        @NotNull(message = "Insert a valid datetime")
+        String initialDateTime
 
 ) {
 
