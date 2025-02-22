@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +21,10 @@ public class MedicineService {
         Medicine medicineSaved =  medicineRepository.save(medicine);
         medicineItemService.generateItens(medicineSaved, initialTime);
         return medicineSaved;
+    }
+
+    public List<Medicine> findAll() {
+        return medicineRepository.findAll();
     }
 
 }
