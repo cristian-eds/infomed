@@ -1,6 +1,7 @@
 package io.github.cristian_eds.InfoMed.service;
 
 import io.github.cristian_eds.InfoMed.models.Medicine;
+import io.github.cristian_eds.InfoMed.models.MedicineItem;
 import io.github.cristian_eds.InfoMed.repository.MedicineRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +28,10 @@ public class MedicineService {
 
     public List<Medicine> findAll() {
         return medicineRepository.findAll();
+    }
+
+    public Optional<Medicine> findById(UUID id) {
+        return medicineRepository.findById(id);
     }
 
 }
