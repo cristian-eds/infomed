@@ -44,4 +44,11 @@ public class MedicineController {
                 }
         ).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable("id") String id) {
+        UUID uuid = UUID.fromString(id);
+        medicineService.deleteById(uuid);
+        return ResponseEntity.ok().build();
+    }
 }

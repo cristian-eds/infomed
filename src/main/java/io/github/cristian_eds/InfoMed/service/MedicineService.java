@@ -26,6 +26,10 @@ public class MedicineService {
         return medicineSaved;
     }
 
+    public void deleteById(UUID id) {
+        medicineRepository.deleteById(id);
+    }
+
     public List<Medicine> findAll() {
         return medicineRepository.findAll();
     }
