@@ -7,10 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/medicine/{idMedicine}/item")
+@RequestMapping("/medicine/item")
 @RequiredArgsConstructor
 public class MedicineItemController {
 
@@ -28,6 +29,12 @@ public class MedicineItemController {
         UUID uuid = UUID.fromString(id);
         MedicineItemResponseDTO medicineItemResponseDTO = MedicineItemResponseDTO.fromEntity(medicineItemService.findById(uuid));
         return ResponseEntity.ok(medicineItemResponseDTO);
+    }
+
+    @GetMapping
+    public  ResponseEntity<List<MedicineItemResponseDTO>> getAll() {
+        List<MedicineItemResponseDTO> medicineItemResponseDTOS = medicineItemService.findAll().stream().map(MedicineItemResponseDTO::fromEntity).toList();
+        return ResponseEntity.ok(medicineItemResponseDTOS);
     }
 
 }

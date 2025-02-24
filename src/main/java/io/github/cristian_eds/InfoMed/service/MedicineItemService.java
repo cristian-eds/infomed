@@ -26,6 +26,10 @@ public class MedicineItemService {
         return medicineItemRepository.findById(id).orElse(null);
     }
 
+    public List<MedicineItem> findAll() {
+        return medicineItemRepository.findAll();
+    }
+
     public MedicineItem alterStatusConclusion(UUID id) {
         Optional<MedicineItem> medicineItemFinded = medicineItemRepository.findById(id);
         if (medicineItemFinded.isEmpty()) return null;
