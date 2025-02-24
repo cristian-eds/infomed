@@ -22,6 +22,10 @@ public class MedicineItemService {
         return medicineItemRepository.save(medicineItem);
     }
 
+    public MedicineItem findById(UUID id) {
+        return medicineItemRepository.findById(id).orElse(null);
+    }
+
     public MedicineItem alterStatusConclusion(UUID id) {
         Optional<MedicineItem> medicineItemFinded = medicineItemRepository.findById(id);
         if (medicineItemFinded.isEmpty()) return null;
