@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +20,17 @@ public class MedicineItemService {
 
     public MedicineItem create(MedicineItem medicineItem) {
         return medicineItemRepository.save(medicineItem);
+    }
+
+    public MedicineItem alterStatusConclusion(UUID id) {
+        Optional<MedicineItem> medicineItemFinded = medicineItemRepository.findById(id);
+        if (medicineItemFinded.isEmpty()) return null;
+
+        MedicineItem medicineItem = medicineItemFinded.get();
+        medicineItem.setConclusion(!medicineItem.getConclusion());
+
+        return medicineItemRepository.save(medicineItem);
+
     }
 
     public List<MedicineItem> generateItens(
