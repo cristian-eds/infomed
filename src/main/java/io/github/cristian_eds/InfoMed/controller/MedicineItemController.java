@@ -1,7 +1,6 @@
 package io.github.cristian_eds.InfoMed.controller;
 
 import io.github.cristian_eds.InfoMed.controller.dto.MedicineItemResponseDTO;
-import io.github.cristian_eds.InfoMed.models.MedicineItem;
 import io.github.cristian_eds.InfoMed.service.MedicineItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -27,6 +27,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseError handleErrosNaoTratados(RuntimeException e) {
-        return new ResponseError("Internal errro, please try again later.",HttpStatus.INTERNAL_SERVER_ERROR.value());
+        return new ResponseError("Internal error, please try again later.",HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
 }
