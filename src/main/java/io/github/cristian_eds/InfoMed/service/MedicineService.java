@@ -1,6 +1,7 @@
 package io.github.cristian_eds.InfoMed.service;
 
 import io.github.cristian_eds.InfoMed.models.Medicine;
+import io.github.cristian_eds.InfoMed.models.User;
 import io.github.cristian_eds.InfoMed.repository.MedicineRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,10 +19,13 @@ public class MedicineService {
 
     private final MedicineRepository medicineRepository;
     private final MedicineItemService medicineItemService;
+    private final SecurityService securityService;
 
     @Transactional
     public Medicine create(Medicine medicine, LocalDateTime initialTime) {
         Medicine medicineSaved =  medicineRepository.save(medicine);
+        User user = securityService.getAuthenticatedUser();
+        medicineSaved.setUser(user);
         medicineItemService.generateItens(medicineSaved, initialTime);
         return medicineSaved;
     }
