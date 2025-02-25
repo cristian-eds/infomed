@@ -7,10 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +20,7 @@ public class MedicineItemService {
     }
 
     public MedicineItem findById(UUID id) {
-        return medicineItemRepository.findById(id).orElse(null);
+        return medicineItemRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No Medicine Item found with this id."));
     }
 
     public List<MedicineItem> findAll() {

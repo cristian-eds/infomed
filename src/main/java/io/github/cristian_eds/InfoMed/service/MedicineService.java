@@ -1,7 +1,6 @@
 package io.github.cristian_eds.InfoMed.service;
 
 import io.github.cristian_eds.InfoMed.models.Medicine;
-import io.github.cristian_eds.InfoMed.models.MedicineItem;
 import io.github.cristian_eds.InfoMed.repository.MedicineRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,6 +27,7 @@ public class MedicineService {
     }
 
     public void deleteById(UUID id) {
+        medicineRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No Medicine found with this Id"));
         medicineRepository.deleteById(id);
     }
 
