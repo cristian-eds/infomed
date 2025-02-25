@@ -1,7 +1,6 @@
 package io.github.cristian_eds.InfoMed.controller.dto;
 
 import io.github.cristian_eds.InfoMed.models.Medicine;
-import io.github.cristian_eds.InfoMed.models.MedicineItem;
 
 import java.util.List;
 import java.util.UUID;
