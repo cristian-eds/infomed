@@ -1,6 +1,6 @@
 package io.github.cristian_eds.InfoMed.controller.config;
 
-import io.github.cristian_eds.InfoMed.HistoricInterceptor;
+import io.github.cristian_eds.InfoMed.interceptors.HistoricInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
