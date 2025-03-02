@@ -8,5 +8,5 @@ import java.util.UUID;
 
 public interface MedicineRepository extends JpaRepository<Medicine, UUID> {
 
-    public List<Medicine> findByNameContaining(String name);
+    public List<Medicine> findByNameContainingIgnoreCase(String name);
 }

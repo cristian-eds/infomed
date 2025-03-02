@@ -39,7 +39,7 @@ public class MedicineService {
 
     public List<Medicine> findAll(String name) {
         if (name == null) return medicineRepository.findAll();
-        return medicineRepository.findByNameContaining(name);
+        return medicineRepository.findByNameContainingIgnoreCase(name);
     }
 
     public Optional<Medicine> findById(UUID id) {
