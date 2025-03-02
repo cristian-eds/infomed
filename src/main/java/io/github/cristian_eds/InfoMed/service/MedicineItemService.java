@@ -25,7 +25,10 @@ public class MedicineItemService {
 
     public List<MedicineItem> findAll() {
         return medicineItemRepository.findAll();
+    }
 
+    public void deleteById(UUID id) {
+        medicineItemRepository.deleteById(id);
     }
 
     public MedicineItem alterStatusConclusion(UUID id) {
