@@ -35,8 +35,8 @@ public class MedicineController {
     }
 
     @GetMapping
-    public ResponseEntity<Object> getAll() {
-        List<MedicineResponseDTO> medicines = medicineService.findAll().stream().map(MedicineResponseDTO::fromEntity).toList();
+    public ResponseEntity<Object> getAll(@RequestParam(value = "name", required = false) String name) {
+        List<MedicineResponseDTO> medicines = medicineService.findAll(name).stream().map(MedicineResponseDTO::fromEntity).toList();
         return ResponseEntity.ok(medicines);
     }
 

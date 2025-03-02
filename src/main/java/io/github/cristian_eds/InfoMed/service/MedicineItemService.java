@@ -25,6 +25,7 @@ public class MedicineItemService {
 
     public List<MedicineItem> findAll() {
         return medicineItemRepository.findAll();
+
     }
 
     public MedicineItem alterStatusConclusion(UUID id) {

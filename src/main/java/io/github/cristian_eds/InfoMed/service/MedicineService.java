@@ -35,8 +35,9 @@ public class MedicineService {
         medicineRepository.deleteById(id);
     }
 
-    public List<Medicine> findAll() {
-        return medicineRepository.findAll();
+    public List<Medicine> findAll(String name) {
+        if (name == null) return medicineRepository.findAll();
+        return medicineRepository.findByNameContaining(name);
     }
 
     public Optional<Medicine> findById(UUID id) {
