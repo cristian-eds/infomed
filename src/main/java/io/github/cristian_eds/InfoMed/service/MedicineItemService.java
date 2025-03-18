@@ -27,6 +27,10 @@ public class MedicineItemService {
         return medicineItemRepository.findAll();
     }
 
+    public void deleteById(UUID id) {
+        medicineItemRepository.deleteById(id);
+    }
+
     public MedicineItem alterStatusConclusion(UUID id) {
         Optional<MedicineItem> medicineItemFinded = medicineItemRepository.findById(id);
         if (medicineItemFinded.isEmpty()) return null;

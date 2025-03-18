@@ -3,6 +3,7 @@ package io.github.cristian_eds.InfoMed.controller;
 import io.github.cristian_eds.InfoMed.controller.common.GenerateURILocation;
 import io.github.cristian_eds.InfoMed.controller.dto.CreateMedicineDTO;
 import io.github.cristian_eds.InfoMed.controller.dto.MedicineResponseDTO;
+import io.github.cristian_eds.InfoMed.controller.dto.MedicineUpdateDTO;
 import io.github.cristian_eds.InfoMed.models.Medicine;
 import io.github.cristian_eds.InfoMed.service.MedicineService;
 import jakarta.validation.Valid;
@@ -35,8 +36,8 @@ public class MedicineController {
     }
 
     @GetMapping
-    public ResponseEntity<Object> getAll() {
-        List<MedicineResponseDTO> medicines = medicineService.findAll().stream().map(MedicineResponseDTO::fromEntity).toList();
+    public ResponseEntity<Object> getAll(@RequestParam(value = "name", required = false) String name) {
+        List<MedicineResponseDTO> medicines = medicineService.findAll(name).stream().map(MedicineResponseDTO::fromEntity).toList();
         return ResponseEntity.ok(medicines);
     }
 
@@ -55,5 +56,12 @@ public class MedicineController {
         UUID uuid = UUID.fromString(id);
         medicineService.deleteById(uuid);
         return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<MedicineResponseDTO> updateMedicine(@PathVariable("id") String id, @RequestBody MedicineUpdateDTO medicineUpdateDTO) {
+        UUID uuid = UUID.fromString(id);
+        MedicineResponseDTO medicineResponseDTO = MedicineResponseDTO.fromEntity(medicineService.update(uuid, medicineUpdateDTO));
+        return ResponseEntity.ok(medicineResponseDTO);
     }
 }

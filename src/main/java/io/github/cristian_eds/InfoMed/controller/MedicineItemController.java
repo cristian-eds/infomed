@@ -36,4 +36,11 @@ public class MedicineItemController {
         return ResponseEntity.ok(medicineItemResponseDTOS);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable("id") String id) {
+        UUID uuid = UUID.fromString(id);
+        medicineItemService.deleteById(uuid);
+        return ResponseEntity.noContent().build();
+    }
+
 }

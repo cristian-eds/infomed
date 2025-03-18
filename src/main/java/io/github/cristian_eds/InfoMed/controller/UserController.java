@@ -29,6 +29,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody @Valid UserDTO userDTO) {
         userService.createUser(UserDTO.toEntity(userDTO));
+        System.out.println(userDTO);
         return ResponseEntity.ok().build();
     }
 
