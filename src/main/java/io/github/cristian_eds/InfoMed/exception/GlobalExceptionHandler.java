@@ -1,6 +1,7 @@
 package io.github.cristian_eds.InfoMed.exception;
 
 import io.github.cristian_eds.InfoMed.controller.dto.ResponseError;
+import io.github.cristian_eds.InfoMed.exception.custom.InvalidLoginException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,6 +30,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseError handleUsernameNotFound(UsernameNotFoundException e) {
         return new ResponseError(e.getMessage(),HttpStatus.NOT_FOUND.value());
+    }
+
+    @ExceptionHandler(InvalidLoginException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseError handleInvalidLogin(InvalidLoginException e) {
+        return new ResponseError(e.getMessage(),HttpStatus.UNAUTHORIZED.value());
     }
 
     @ExceptionHandler(RuntimeException.class)
