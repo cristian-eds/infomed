@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record MedicineItemResponseDTO(
-        UUID ID,
+        UUID id,
         Integer medicineItemSequence,
         LocalDateTime dayHour,
         Boolean conclusion,

@@ -1,5 +1,6 @@
 package io.github.cristian_eds.InfoMed.service;
 
+import io.github.cristian_eds.InfoMed.controller.dto.MedicineItemUpdateDTO;
 import io.github.cristian_eds.InfoMed.models.Medicine;
 import io.github.cristian_eds.InfoMed.models.MedicineItem;
 import io.github.cristian_eds.InfoMed.repository.MedicineItemRepository;
@@ -66,8 +67,16 @@ public class MedicineItemService {
         return listMedicineItens;
     }
 
-    private int calculateTotalItens(double totalDays, double frequenceHour) {
-        return (int) Math.floor(totalDays * 24 / frequenceHour);
+    public MedicineItem update(UUID uuid, MedicineItemUpdateDTO medicineItemUpdateDTO) {
+       MedicineItem medicineItem = findById(uuid);
+       medicineItem.setDayHour(medicineItemUpdateDTO.dayHour());
+       medicineItem.setConclusion(medicineItemUpdateDTO.conclusion());
+       return medicineItemRepository.save(medicineItem);
     }
+
+    private int calculateTotalItens(double totalDays, double frequencyHour) {
+        return (int) Math.floor(totalDays * 24 / frequencyHour);
+    }
+
 
 }

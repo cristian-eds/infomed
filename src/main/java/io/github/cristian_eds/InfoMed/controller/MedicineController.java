@@ -24,15 +24,15 @@ public class MedicineController {
     private final MedicineService medicineService;
 
     @PostMapping
-    public ResponseEntity<Object> create(@RequestBody @Valid CreateMedicineDTO createMedicineDTO) {
+    public ResponseEntity<MedicineResponseDTO> create(@RequestBody @Valid CreateMedicineDTO createMedicineDTO) {
         LocalDateTime initialLocalDateTime = LocalDateTime.parse(createMedicineDTO.initialDateTime());
 
         Medicine medicine = CreateMedicineDTO.toEntity(createMedicineDTO);
-        Medicine medicineSaved = medicineService.create(medicine,initialLocalDateTime);
+        MedicineResponseDTO medicineSaved = MedicineResponseDTO.fromEntity(medicineService.create(medicine,initialLocalDateTime));
 
-        URI location = GenerateURILocation.generateURI(medicineSaved.getId());
+        URI location = GenerateURILocation.generateURI(medicineSaved.id());
 
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.created(location).body(medicineSaved);
     }
 
     @GetMapping

@@ -51,8 +51,7 @@ public class ActionUserType implements UserType<ActionType> {
     @Override
     public ActionType deepCopy(ActionType value) {
         if(value == null) return null;
-        ActionType actionType = ActionType.valueOf(value.toString());
-        return actionType;
+        return ActionType.valueOf(value.toString());
     }
 
     @Override

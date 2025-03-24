@@ -21,7 +21,7 @@ public class JwtTokenService {
         return new TokenDTO(JWT.create()
                 .withIssuer("infomed")
                 .withSubject(login)
-                .withExpiresAt(new Date(System.currentTimeMillis() + 1800000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 14400000))
                 .sign(algorithm));
     }
 

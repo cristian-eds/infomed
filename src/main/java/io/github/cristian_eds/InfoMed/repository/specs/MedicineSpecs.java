@@ -6,7 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class MedicineSpecs {
 
-    public Specification<Medicine> nameLike(String name) {
+    public static Specification<Medicine> nameLike(String name) {
         return (root, query, cb) ->
                 cb.like(
                         cb.upper(root.get("name"))

@@ -25,7 +25,7 @@ public class HistoricInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception exception) throws Exception{
 
-        if (handler instanceof HandlerMethod handlerMethod) {
+        if (handler instanceof HandlerMethod handlerMethod && !request.getMethod().equals("GET")) {
 
             ActionType actionType = ActionType.valueOf(request.getMethod());
             String description = handlerMethod.getMethod().getName();

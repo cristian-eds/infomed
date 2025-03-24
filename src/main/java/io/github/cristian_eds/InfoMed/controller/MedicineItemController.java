@@ -1,6 +1,7 @@
 package io.github.cristian_eds.InfoMed.controller;
 
 import io.github.cristian_eds.InfoMed.controller.dto.MedicineItemResponseDTO;
+import io.github.cristian_eds.InfoMed.controller.dto.MedicineItemUpdateDTO;
 import io.github.cristian_eds.InfoMed.service.MedicineItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,13 @@ public class MedicineItemController {
         UUID uuid = UUID.fromString(id);
         medicineItemService.alterStatusConclusion(uuid);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<MedicineItemResponseDTO> update(@PathVariable("id") String id, @RequestBody MedicineItemUpdateDTO medicineItemUpdateDTO) {
+        UUID uuid = UUID.fromString(id);
+        MedicineItemResponseDTO medicineItemResponseDTO = MedicineItemResponseDTO.fromEntity(medicineItemService.update(uuid,medicineItemUpdateDTO));
+        return ResponseEntity.ok(medicineItemResponseDTO);
     }
 
     @GetMapping("/{id}")

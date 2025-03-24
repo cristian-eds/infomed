@@ -3,9 +3,12 @@ package io.github.cristian_eds.InfoMed.service;
 import io.github.cristian_eds.InfoMed.controller.dto.MedicineResponseDTO;
 import io.github.cristian_eds.InfoMed.controller.dto.MedicineUpdateDTO;
 import io.github.cristian_eds.InfoMed.models.Medicine;
+import io.github.cristian_eds.InfoMed.models.MedicineItem;
 import io.github.cristian_eds.InfoMed.models.User;
 import io.github.cristian_eds.InfoMed.repository.MedicineRepository;
+import io.github.cristian_eds.InfoMed.repository.specs.MedicineSpecs;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +31,8 @@ public class MedicineService {
         Medicine medicineSaved =  medicineRepository.save(medicine);
         User user = securityService.getAuthenticatedUser();
         medicineSaved.setUser(user);
-        medicineItemService.generateItens(medicineSaved, initialTime);
+        List<MedicineItem> itens = medicineItemService.generateItens(medicineSaved, initialTime);
+        medicineSaved.setMedicineItems(itens);
         return medicineSaved;
     }
 
@@ -38,8 +42,11 @@ public class MedicineService {
     }
 
     public List<Medicine> findAll(String name) {
-        if (name == null) return medicineRepository.findAll();
-        return medicineRepository.findByNameContainingIgnoreCase(name);
+        Specification<Medicine> specs = Specification.where(
+                (root, query, criteriaBuilder) ->
+                        criteriaBuilder.conjunction());
+        if (name != null) specs = specs.and(MedicineSpecs.nameLike(name));
+        return medicineRepository.findAll(specs);
     }
 
     public Optional<Medicine> findById(UUID id) {
