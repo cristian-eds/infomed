@@ -1,6 +1,7 @@
 package io.github.cristian_eds.InfoMed.exception;
 
 import io.github.cristian_eds.InfoMed.controller.dto.ResponseError;
+import io.github.cristian_eds.InfoMed.exception.custom.EmailAlreadyExistsException;
 import io.github.cristian_eds.InfoMed.exception.custom.InvalidLoginException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -36,6 +37,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseError handleInvalidLogin(InvalidLoginException e) {
         return new ResponseError(e.getMessage(),HttpStatus.UNAUTHORIZED.value());
+    }
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseError handleEmailDupicateRegister(EmailAlreadyExistsException e) {
+        return new ResponseError(e.getMessage(), HttpStatus.CONFLICT.value());
     }
 
     @ExceptionHandler(RuntimeException.class)

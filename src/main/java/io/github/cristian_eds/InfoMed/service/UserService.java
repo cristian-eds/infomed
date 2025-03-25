@@ -1,5 +1,6 @@
 package io.github.cristian_eds.InfoMed.service;
 
+import io.github.cristian_eds.InfoMed.exception.custom.EmailAlreadyExistsException;
 import io.github.cristian_eds.InfoMed.models.User;
 import io.github.cristian_eds.InfoMed.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,8 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public User createUser(User user) {
+        Optional<User> userFinded = findByEmail(user.getEmail());
+        if(userFinded.isPresent()) throw new EmailAlreadyExistsException("There is already a user with this email address.");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
