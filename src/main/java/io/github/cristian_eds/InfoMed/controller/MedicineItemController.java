@@ -18,10 +18,10 @@ public class MedicineItemController {
     private final MedicineItemService medicineItemService;
 
     @PutMapping("/{idItem}/status")
-    public ResponseEntity<Void> alterStatusConclusion(@PathVariable("idItem") String id) {
+    public ResponseEntity<MedicineItemResponseDTO> alterStatusConclusion(@PathVariable("idItem") String id) {
         UUID uuid = UUID.fromString(id);
-        medicineItemService.alterStatusConclusion(uuid);
-        return ResponseEntity.noContent().build();
+        MedicineItemResponseDTO medicineItemResponseDTO = MedicineItemResponseDTO.fromEntity(medicineItemService.alterStatusConclusion(uuid));
+        return ResponseEntity.ok(medicineItemResponseDTO);
     }
 
     @PutMapping("/{id}")
