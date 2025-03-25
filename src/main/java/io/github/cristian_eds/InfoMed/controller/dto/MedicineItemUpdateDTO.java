@@ -6,12 +6,14 @@ import java.time.LocalDateTime;
 
 public record MedicineItemUpdateDTO(
         LocalDateTime dayHour,
-        Boolean conclusion
+        Boolean conclusion,
+        LocalDateTime conclusionDayHour
 ) {
     public static MedicineItem toEntity(MedicineItemUpdateDTO medicineItemUpdateDTO) {
         MedicineItem medicineItem = new MedicineItem();
         medicineItem.setConclusion(medicineItemUpdateDTO.conclusion);
         medicineItem.setDayHour(medicineItemUpdateDTO.dayHour);
+        medicineItem.setConclusionDayHour(medicineItemUpdateDTO.conclusionDayHour);
         return medicineItem;
 
     }

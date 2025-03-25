@@ -37,6 +37,11 @@ public class MedicineItemService {
         if (medicineItemFinded.isEmpty()) return null;
 
         MedicineItem medicineItem = medicineItemFinded.get();
+        if(medicineItem.getConclusion()) {
+            medicineItem.setConclusionDayHour(null);
+        } else {
+            medicineItem.setConclusionDayHour(LocalDateTime.now());
+        }
         medicineItem.setConclusion(!medicineItem.getConclusion());
 
         return medicineItemRepository.save(medicineItem);
@@ -56,6 +61,7 @@ public class MedicineItemService {
             medicineItem.setDayHour(dayHourTime);
             medicineItem.setMedicineItemSequence(i);
             medicineItem.setMedicine(medicine);
+            medicineItem.setConclusionDayHour(null);
 
             listMedicineItens.add(medicineItem);
 
@@ -71,6 +77,7 @@ public class MedicineItemService {
        MedicineItem medicineItem = findById(uuid);
        medicineItem.setDayHour(medicineItemUpdateDTO.dayHour());
        medicineItem.setConclusion(medicineItemUpdateDTO.conclusion());
+       medicineItem.setConclusionDayHour(medicineItemUpdateDTO.conclusionDayHour());
        return medicineItemRepository.save(medicineItem);
     }
 

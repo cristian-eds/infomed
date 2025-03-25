@@ -24,6 +24,9 @@ public class MedicineItem {
     @Column(nullable = false)
     private Boolean conclusion;
 
+    @Column(nullable = true)
+    private LocalDateTime conclusionDayHour;
+
     @ManyToOne
     @JoinColumn(name = "id_medicine")
     private Medicine medicine;

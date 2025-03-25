@@ -10,6 +10,7 @@ public record MedicineItemResponseDTO(
         Integer medicineItemSequence,
         LocalDateTime dayHour,
         Boolean conclusion,
+        LocalDateTime conclusionDayHour,
         UUID medicine
 ) {
     public static MedicineItemResponseDTO fromEntity(MedicineItem medicineItem) {
@@ -18,6 +19,7 @@ public record MedicineItemResponseDTO(
                 medicineItem.getMedicineItemSequence(),
                 medicineItem.getDayHour(),
                 medicineItem.getConclusion(),
+                medicineItem.getConclusionDayHour(),
                 medicineItem.getMedicine().getId()
         );
     }
