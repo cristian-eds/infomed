@@ -46,6 +46,8 @@ public class MedicineService {
                 (root, query, criteriaBuilder) ->
                         criteriaBuilder.conjunction());
         if (name != null) specs = specs.and(MedicineSpecs.nameLike(name));
+        User user = securityService.getAuthenticatedUser();
+        specs = specs.and(MedicineSpecs.userEquals(user));
         return medicineRepository.findAll(specs);
     }
 
@@ -58,4 +60,5 @@ public class MedicineService {
         medicine.setName(medicineUpdateDTO.name());
         return medicineRepository.save(medicine);
     }
+
 }
