@@ -1,6 +1,7 @@
 package io.github.cristian_eds.InfoMed.controller;
 
 import io.github.cristian_eds.InfoMed.controller.dto.UserDTO;
+import io.github.cristian_eds.InfoMed.controller.dto.UserResponseDTO;
 import io.github.cristian_eds.InfoMed.service.UserService;
 import io.github.cristian_eds.InfoMed.models.User;
 import jakarta.validation.Valid;
@@ -27,10 +28,9 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody @Valid UserDTO userDTO) {
-        userService.createUser(UserDTO.toEntity(userDTO));
-        System.out.println(userDTO);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<UserResponseDTO> create(@RequestBody @Valid UserDTO userDTO) {
+        UserResponseDTO userResponseDTO = UserResponseDTO.fromEntity(userService.createUser(UserDTO.toEntity(userDTO)));
+        return ResponseEntity.ok(userResponseDTO);
     }
 
 }
