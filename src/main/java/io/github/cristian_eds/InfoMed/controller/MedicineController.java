@@ -2,18 +2,19 @@ package io.github.cristian_eds.InfoMed.controller;
 
 import io.github.cristian_eds.InfoMed.controller.common.GenerateURILocation;
 import io.github.cristian_eds.InfoMed.controller.dto.CreateMedicineDTO;
+import io.github.cristian_eds.InfoMed.controller.dto.CustomMedicineItemDTO;
 import io.github.cristian_eds.InfoMed.controller.dto.MedicineResponseDTO;
 import io.github.cristian_eds.InfoMed.controller.dto.MedicineUpdateDTO;
 import io.github.cristian_eds.InfoMed.models.Medicine;
 import io.github.cristian_eds.InfoMed.service.MedicineService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -36,9 +37,11 @@ public class MedicineController {
     }
 
     @GetMapping
-    public ResponseEntity<Object> getAll(@RequestParam(value = "name", required = false) String name) {
-        List<MedicineResponseDTO> medicines = medicineService.findAll(name).stream().map(MedicineResponseDTO::fromEntity).toList();
-        return ResponseEntity.ok(medicines);
+    public ResponseEntity<Page<CustomMedicineItemDTO>> getAll(@RequestParam(value = "name", required = false) String name,
+                                                              @RequestParam(value = "actualPage", required = false, defaultValue = "0") int actualPage,
+                                                              @RequestParam(value = "sizePage", required = false, defaultValue = "6") int sizePage) {
+        //List<MedicineResponseDTO> medicines = medicineService.findAll(name,actualPage,sizePage).stream().map(MedicineResponseDTO::fromEntity).toList();
+        return ResponseEntity.ok(medicineService.findAll(name,actualPage,sizePage));
     }
 
     @GetMapping("{id}")
