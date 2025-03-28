@@ -15,6 +15,5 @@ public record MedicineItemUpdateDTO(
         medicineItem.setDayHour(medicineItemUpdateDTO.dayHour);
         medicineItem.setConclusionDayHour(medicineItemUpdateDTO.conclusionDayHour);
         return medicineItem;
-
     }
 }

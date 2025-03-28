@@ -59,6 +59,12 @@ public class MedicineService {
         return convertPageMedicineToPageMedicineResponseDTO(medicinePage,pageable);
     }
 
+    public Page<CustomMedicineItemDTO> findAllWithCustomPage(String name, int actualPage, int sizePage) {
+        Pageable pageable = PageRequest.of(actualPage,sizePage);
+        User user = securityService.getAuthenticatedUser();
+        return medicineRepository.findCustomMedicineItemsWithPagination(name.toUpperCase(), user, pageable);
+    }
+
     public Optional<Medicine> findById(UUID id) {
         return medicineRepository.findById(id);
     }

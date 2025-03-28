@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -25,7 +26,7 @@ public class MedicineController {
     private final MedicineService medicineService;
 
     @PostMapping
-    public ResponseEntity<MedicineResponseDTO> create(@RequestBody @Valid CreateMedicineDTO createMedicineDTO) {
+    public ResponseEntity<List<CustomMedicineItemDTO>> create(@RequestBody @Valid CreateMedicineDTO createMedicineDTO) {
         LocalDateTime initialLocalDateTime = LocalDateTime.parse(createMedicineDTO.initialDateTime());
 
         Medicine medicine = CreateMedicineDTO.toEntity(createMedicineDTO);
@@ -33,15 +34,21 @@ public class MedicineController {
 
         URI location = GenerateURILocation.generateURI(medicineSaved.id());
 
-        return ResponseEntity.created(location).body(medicineSaved);
+        return ResponseEntity.created(location).body(CustomMedicineItemDTO.fromMedicineResponseDTO(medicineSaved));
     }
 
-    @GetMapping
     public ResponseEntity<Page<CustomMedicineItemDTO>> getAll(@RequestParam(value = "name", required = false) String name,
                                                               @RequestParam(value = "actualPage", required = false, defaultValue = "0") int actualPage,
                                                               @RequestParam(value = "sizePage", required = false, defaultValue = "6") int sizePage) {
         //List<MedicineResponseDTO> medicines = medicineService.findAll(name,actualPage,sizePage).stream().map(MedicineResponseDTO::fromEntity).toList();
         return ResponseEntity.ok(medicineService.findAll(name,actualPage,sizePage));
+    }
+
+    @GetMapping()
+    public ResponseEntity<Object> getAllWithCustomPage(@RequestParam(value = "name", required = false,defaultValue = "") String name,
+                                                       @RequestParam(value = "actualPage", required = false, defaultValue = "0") int actualPage,
+                                                       @RequestParam(value = "sizePage", required = false, defaultValue = "6") int sizePage) {
+        return ResponseEntity.ok(medicineService.findAllWithCustomPage(name,actualPage,sizePage));
     }
 
     @GetMapping("{id}")
