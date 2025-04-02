@@ -1,13 +1,14 @@
 package io.github.cristian_eds.InfoMed.controller;
 
+import io.github.cristian_eds.InfoMed.controller.dto.CustomMedicineItemDTO;
 import io.github.cristian_eds.InfoMed.controller.dto.MedicineItemResponseDTO;
 import io.github.cristian_eds.InfoMed.controller.dto.MedicineItemUpdateDTO;
 import io.github.cristian_eds.InfoMed.service.MedicineItemService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -39,9 +40,10 @@ public class MedicineItemController {
     }
 
     @GetMapping
-    public  ResponseEntity<List<MedicineItemResponseDTO>> getAll() {
-        List<MedicineItemResponseDTO> medicineItemResponseDTOS = medicineItemService.findAll().stream().map(MedicineItemResponseDTO::fromEntity).toList();
-        return ResponseEntity.ok(medicineItemResponseDTOS);
+    public ResponseEntity<Page<CustomMedicineItemDTO>> getAllWithCustomPage(@RequestParam(value = "name", required = false,defaultValue = "") String name,
+                                                                            @RequestParam(value = "actualPage", required = false, defaultValue = "0") int actualPage,
+                                                                            @RequestParam(value = "sizePage", required = false, defaultValue = "6") int sizePage) {
+        return ResponseEntity.ok(medicineItemService.findAllWithCustomPage(name,actualPage,sizePage));
     }
 
     @DeleteMapping("/{id}")

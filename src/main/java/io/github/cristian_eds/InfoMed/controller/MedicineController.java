@@ -37,18 +37,11 @@ public class MedicineController {
         return ResponseEntity.created(location).body(CustomMedicineItemDTO.fromMedicineResponseDTO(medicineSaved));
     }
 
-    public ResponseEntity<Page<CustomMedicineItemDTO>> getAll(@RequestParam(value = "name", required = false) String name,
+    @GetMapping
+    public ResponseEntity<Page<MedicineResponseDTO>> getAll(@RequestParam(value = "name", required = false) String name,
                                                               @RequestParam(value = "actualPage", required = false, defaultValue = "0") int actualPage,
                                                               @RequestParam(value = "sizePage", required = false, defaultValue = "6") int sizePage) {
-        //List<MedicineResponseDTO> medicines = medicineService.findAll(name,actualPage,sizePage).stream().map(MedicineResponseDTO::fromEntity).toList();
         return ResponseEntity.ok(medicineService.findAll(name,actualPage,sizePage));
-    }
-
-    @GetMapping()
-    public ResponseEntity<Object> getAllWithCustomPage(@RequestParam(value = "name", required = false,defaultValue = "") String name,
-                                                       @RequestParam(value = "actualPage", required = false, defaultValue = "0") int actualPage,
-                                                       @RequestParam(value = "sizePage", required = false, defaultValue = "6") int sizePage) {
-        return ResponseEntity.ok(medicineService.findAllWithCustomPage(name,actualPage,sizePage));
     }
 
     @GetMapping("{id}")

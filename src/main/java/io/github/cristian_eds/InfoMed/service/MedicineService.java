@@ -46,7 +46,7 @@ public class MedicineService {
         medicineRepository.deleteById(id);
     }
 
-    public Page<CustomMedicineItemDTO> findAll(String name, int actualPage, int sizePage) {
+    public Page<MedicineResponseDTO> findAll(String name, int actualPage, int sizePage) {
         Specification<Medicine> specs = Specification.where(
                 (root, query, criteriaBuilder) ->
                         criteriaBuilder.conjunction());
@@ -59,12 +59,6 @@ public class MedicineService {
         return convertPageMedicineToPageMedicineResponseDTO(medicinePage,pageable);
     }
 
-    public Page<CustomMedicineItemDTO> findAllWithCustomPage(String name, int actualPage, int sizePage) {
-        Pageable pageable = PageRequest.of(actualPage,sizePage);
-        User user = securityService.getAuthenticatedUser();
-        return medicineRepository.findCustomMedicineItemsWithPagination(name.toUpperCase(), user, pageable);
-    }
-
     public Optional<Medicine> findById(UUID id) {
         return medicineRepository.findById(id);
     }
@@ -75,12 +69,11 @@ public class MedicineService {
         return medicineRepository.save(medicine);
     }
 
-    private Page<CustomMedicineItemDTO> convertPageMedicineToPageMedicineResponseDTO(Page<Medicine> medicinesPage, Pageable pageable) {
+    private Page<MedicineResponseDTO> convertPageMedicineToPageMedicineResponseDTO(Page<Medicine> medicinesPage, Pageable pageable) {
         List<MedicineResponseDTO> listMedicinesDTOs = medicinesPage.getContent().stream().map(
                 MedicineResponseDTO::fromEntity).toList();
-        List<CustomMedicineItemDTO> listCustomMedicineItems = CustomMedicineItemDTO.fromListMedicineResponseDTO(listMedicinesDTOs);
 
-        return new PageImpl<>(listCustomMedicineItems, pageable, medicinesPage.getTotalElements());
+        return new PageImpl<>(listMedicinesDTOs, pageable, medicinesPage.getTotalElements());
     }
 
 }
