@@ -2,6 +2,7 @@ package io.github.cristian_eds.InfoMed.controller.dto;
 
 import io.github.cristian_eds.InfoMed.models.Medicine;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -10,7 +11,8 @@ public record MedicineResponseDTO(
         String name,
         Double totalDays,
         Double frequencyHours,
-        List<MedicineItemResponseDTO> medicineItems
+        List<MedicineItemResponseDTO> medicineItems,
+        LocalDateTime registrationDate
 ) {
 
     public static MedicineResponseDTO fromEntity(Medicine medicine) {
@@ -19,7 +21,8 @@ public record MedicineResponseDTO(
                 medicine.getName(),
                 medicine.getTotalDays(),
                 medicine.getFrequencyHours(),
-                medicine.getMedicineItems().stream().map(MedicineItemResponseDTO::fromEntity).toList()
+                medicine.getMedicineItems().stream().map(MedicineItemResponseDTO::fromEntity).toList(),
+                medicine.getRegistrationDate()
         );
     }
 }
