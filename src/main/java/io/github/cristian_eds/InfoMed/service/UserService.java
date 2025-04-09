@@ -19,8 +19,8 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public User createUser(User user) {
-        Optional<User> userFinded = findByEmail(user.getEmail());
-        if(userFinded.isPresent()) throw new EmailAlreadyExistsException("There is already a user with this email address.");
+        User userFinded = findByEmail(user.getEmail());
+        if(userFinded != null) throw new EmailAlreadyExistsException("There is already a user with this email address.");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
@@ -29,8 +29,8 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("User with id not found."));
     }
 
-    public Optional<User> findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new NoSuchElementException("User with e-mail not found"));
     }
 
 }

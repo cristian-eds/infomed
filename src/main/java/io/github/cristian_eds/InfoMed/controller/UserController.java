@@ -18,18 +18,15 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/test")
-    public ResponseEntity<User>  test() {
-        User test = new User();
-        test.setId(UUID.randomUUID());
-        test.setPassword("test");
-        test.setEmail("test");
-        return ResponseEntity.ok(test);
-    }
-
     @PostMapping
     public ResponseEntity<UserResponseDTO> create(@RequestBody @Valid UserDTO userDTO) {
         UserResponseDTO userResponseDTO = UserResponseDTO.fromEntity(userService.createUser(UserDTO.toEntity(userDTO)));
+        return ResponseEntity.ok(userResponseDTO);
+    }
+
+    @GetMapping
+    public ResponseEntity<UserResponseDTO> getUserByEmail(@RequestParam("email") String email) {
+        UserResponseDTO userResponseDTO = UserResponseDTO.fromEntity(userService.findByEmail(email));
         return ResponseEntity.ok(userResponseDTO);
     }
 
