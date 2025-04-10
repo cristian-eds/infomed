@@ -11,7 +11,7 @@ public record UserDTO(
                 @Size(max = 200, message = "Insert a valid email.")
         String email,
 
-        @Size(max = 300)
+        @Size(max = 300, min = 4)
                 @NotBlank(message = "Insert a valid password.")
         String password,
         @Size(max = 150, message = "Insert a valid name.")
