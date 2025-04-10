@@ -2,6 +2,7 @@ package io.github.cristian_eds.InfoMed.exception;
 
 import io.github.cristian_eds.InfoMed.controller.dto.ResponseError;
 import io.github.cristian_eds.InfoMed.exception.custom.EmailAlreadyExistsException;
+import io.github.cristian_eds.InfoMed.exception.custom.IncorrectPasswordException;
 import io.github.cristian_eds.InfoMed.exception.custom.InvalidLoginException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,6 +20,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseError handleDateTimeParse(DateTimeParseException e) {
         return new ResponseError("DateTime invalid, please try again with valid datetime.",HttpStatus.BAD_REQUEST.value());
+    }
+
+    @ExceptionHandler(IncorrectPasswordException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseError handleIncorrectPassword(IncorrectPasswordException e) {
+        return new ResponseError(e.getMessage(),HttpStatus.BAD_REQUEST.value());
     }
 
     @ExceptionHandler(NoSuchElementException.class)
