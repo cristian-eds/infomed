@@ -22,9 +22,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public TokenDTO login(String email, String password) {
-        User user = userRepository.findByEmail(email).orElse(null);
-
-        if (user == null) throw new UsernameNotFoundException("User with email not found");
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User with email not found"));
 
         if (checkPasswordsMatches(password, user.getPassword())){
             var authUsernamePassword = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());

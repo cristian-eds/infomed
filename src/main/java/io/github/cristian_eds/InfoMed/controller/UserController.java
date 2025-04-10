@@ -1,5 +1,6 @@
 package io.github.cristian_eds.InfoMed.controller;
 
+import io.github.cristian_eds.InfoMed.controller.dto.ChangeUserPasswordDTO;
 import io.github.cristian_eds.InfoMed.controller.dto.UserDTO;
 import io.github.cristian_eds.InfoMed.controller.dto.UserResponseDTO;
 import io.github.cristian_eds.InfoMed.service.UserService;
@@ -28,6 +29,13 @@ public class UserController {
     public ResponseEntity<UserResponseDTO> getUserByEmail(@RequestParam("email") String email) {
         UserResponseDTO userResponseDTO = UserResponseDTO.fromEntity(userService.findByEmail(email));
         return ResponseEntity.ok(userResponseDTO);
+    }
+
+    @PatchMapping("{id}")
+    public ResponseEntity<Void> changePassword(@PathVariable String id, @RequestBody @Valid ChangeUserPasswordDTO changeUserPasswordDTO) {
+        UUID uuid = UUID.fromString(id);
+        userService.changePassword(uuid,changeUserPasswordDTO);
+        return ResponseEntity.ok().build();
     }
 
 }
