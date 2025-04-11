@@ -3,6 +3,7 @@ package io.github.cristian_eds.InfoMed.controller;
 import io.github.cristian_eds.InfoMed.controller.dto.ChangeUserPasswordDTO;
 import io.github.cristian_eds.InfoMed.controller.dto.UserDTO;
 import io.github.cristian_eds.InfoMed.controller.dto.UserResponseDTO;
+import io.github.cristian_eds.InfoMed.controller.dto.UserUpdateDTO;
 import io.github.cristian_eds.InfoMed.service.UserService;
 import io.github.cristian_eds.InfoMed.models.User;
 import jakarta.validation.Valid;
@@ -36,6 +37,13 @@ public class UserController {
         UUID uuid = UUID.fromString(id);
         userService.changePassword(uuid,changeUserPasswordDTO);
         return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<UserResponseDTO> updateUser(@PathVariable String id, @RequestBody @Valid UserUpdateDTO userUpdateDTO) {
+        UUID uuid = UUID.fromString(id);
+        User userUpdated = userService.updateUser(uuid,userUpdateDTO);
+        return ResponseEntity.ok(UserResponseDTO.fromEntity(userUpdated));
     }
 
 }

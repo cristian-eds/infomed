@@ -1,10 +1,12 @@
 package io.github.cristian_eds.InfoMed.service;
 
 import io.github.cristian_eds.InfoMed.controller.dto.ChangeUserPasswordDTO;
+import io.github.cristian_eds.InfoMed.controller.dto.UserUpdateDTO;
 import io.github.cristian_eds.InfoMed.exception.custom.EmailAlreadyExistsException;
 import io.github.cristian_eds.InfoMed.exception.custom.IncorrectPasswordException;
 import io.github.cristian_eds.InfoMed.models.User;
 import io.github.cristian_eds.InfoMed.repository.UserRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -46,4 +48,10 @@ public class UserService {
         userRepository.save(userFound);
     }
 
+    public User updateUser(UUID uuid, @Valid UserUpdateDTO userUpdateDTO) {
+        User userFound = findById(uuid);
+        userFound.setName(userUpdateDTO.name());
+        userFound.setEmail(userUpdateDTO.email());
+        return userRepository.save(userFound);
+    }
 }
