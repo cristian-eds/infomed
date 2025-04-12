@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @RestController
@@ -28,7 +29,10 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<UserResponseDTO> getUserByEmail(@RequestParam("email") String email) {
-        UserResponseDTO userResponseDTO = UserResponseDTO.fromEntity(userService.findByEmail(email));
+        UserResponseDTO userResponseDTO = UserResponseDTO.fromEntity(
+                userService.findByEmail(email)
+                        .orElseThrow(() ->
+                                new NoSuchElementException("No user found with this email")));
         return ResponseEntity.ok(userResponseDTO);
     }
 

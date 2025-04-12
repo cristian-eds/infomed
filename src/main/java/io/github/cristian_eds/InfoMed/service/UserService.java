@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -22,8 +23,8 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public User createUser(User user) {
-        User userFound = findByEmail(user.getEmail());
-        if(userFound != null) throw new EmailAlreadyExistsException("There is already a user with this email address.");
+        Optional<User> userFound = findByEmail(user.getEmail());
+        if(userFound.isPresent()) throw new EmailAlreadyExistsException("There is already a user with this email address.");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
@@ -32,8 +33,8 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("User with id not found."));
     }
 
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new NoSuchElementException("User with e-mail not found"));
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     public void changePassword(UUID uuid, ChangeUserPasswordDTO changeUserPasswordDTO) {
