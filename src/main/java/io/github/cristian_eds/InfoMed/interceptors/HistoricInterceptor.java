@@ -30,7 +30,6 @@ public class HistoricInterceptor implements HandlerInterceptor {
             ActionType actionType = ActionType.valueOf(request.getMethod());
             String description = handlerMethod.getMethod().getName();
             Integer status = response.getStatus();
-
             HistoricLogSaveDTO historicLogSaveDTO =
                    new HistoricLogSaveDTO(actionType,description,status);
 
