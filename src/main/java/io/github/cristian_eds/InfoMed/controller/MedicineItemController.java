@@ -42,8 +42,11 @@ public class MedicineItemController {
     @GetMapping
     public ResponseEntity<Page<CustomMedicineItemDTO>> getAllWithCustomPage(@RequestParam(value = "name", required = false,defaultValue = "") String name,
                                                                             @RequestParam(value = "actualPage", required = false, defaultValue = "0") int actualPage,
-                                                                            @RequestParam(value = "sizePage", required = false, defaultValue = "6") int sizePage) {
-        return ResponseEntity.ok(medicineItemService.findAllWithCustomPage(name,actualPage,sizePage));
+                                                                            @RequestParam(value = "sizePage", required = false, defaultValue = "6") int sizePage,
+                                                                            @RequestParam(value = "initialDate", required = false) String initialDate,
+                                                                            @RequestParam(value = "finalDate", required = false) String finalDate,
+                                                                            @RequestParam(value = "conclusion", required = false) String conclusion) {
+        return ResponseEntity.ok(medicineItemService.findAllWithCustomPage(name,actualPage,sizePage, initialDate,finalDate,conclusion));
     }
 
     @DeleteMapping("/{id}")
