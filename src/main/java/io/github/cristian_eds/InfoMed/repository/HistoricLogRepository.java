@@ -11,5 +11,5 @@ import java.util.UUID;
 
 public interface HistoricLogRepository extends JpaRepository<HistoricLog, UUID> {
 
-    Page<HistoricLogResponseDTO> findByUser(User user, Pageable pageable);
+    Page<HistoricLogResponseDTO> findByUserOrderByDateHourDesc(User user, Pageable pageable);
 }
