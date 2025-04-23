@@ -8,13 +8,11 @@ import io.github.cristian_eds.InfoMed.models.User;
 import io.github.cristian_eds.InfoMed.repository.MedicineItemRepository;
 import io.github.cristian_eds.InfoMed.repository.MedicineRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -107,6 +105,11 @@ public class MedicineItemService {
        medicineItem.setConclusion(medicineItemUpdateDTO.conclusion());
        medicineItem.setConclusionDayHour(medicineItemUpdateDTO.conclusionDayHour());
        return medicineItemRepository.save(medicineItem);
+    }
+
+    public Optional<MedicineItem> findNextMedicine() {
+        User user = securityService.getAuthenticatedUser();
+        return medicineItemRepository.findFirstByDayHourGreaterThanEqualNow(user);
     }
 
     private int calculateTotalItens(double totalDays, double frequencyHour) {

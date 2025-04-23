@@ -3,6 +3,7 @@ package io.github.cristian_eds.InfoMed.controller;
 import io.github.cristian_eds.InfoMed.controller.dto.CustomMedicineItemDTO;
 import io.github.cristian_eds.InfoMed.controller.dto.MedicineItemResponseDTO;
 import io.github.cristian_eds.InfoMed.controller.dto.MedicineItemUpdateDTO;
+import io.github.cristian_eds.InfoMed.controller.dto.MedicineResponseDTO;
 import io.github.cristian_eds.InfoMed.service.MedicineItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -54,6 +55,16 @@ public class MedicineItemController {
         UUID uuid = UUID.fromString(id);
         medicineItemService.deleteById(uuid);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/next")
+    public ResponseEntity<MedicineItemResponseDTO> getNextMedicineItem() {
+        return medicineItemService
+                .findNextMedicine().map(
+                        medicineItem ->
+                                ResponseEntity.ok(MedicineItemResponseDTO.fromEntity(medicineItem))).orElse(
+                                ResponseEntity.noContent().build()
+        );
     }
 
 }
