@@ -5,12 +5,16 @@ import io.github.cristian_eds.InfoMed.controller.dto.MedicineItemUpdateDTO;
 import io.github.cristian_eds.InfoMed.models.Medicine;
 import io.github.cristian_eds.InfoMed.models.MedicineItem;
 import io.github.cristian_eds.InfoMed.models.User;
+import io.github.cristian_eds.InfoMed.models.enums.FieldSortMedicineItem;
+import io.github.cristian_eds.InfoMed.models.enums.TypeSortMedicineItem;
 import io.github.cristian_eds.InfoMed.repository.MedicineItemRepository;
 import io.github.cristian_eds.InfoMed.repository.MedicineRepository;
+import jakarta.servlet.ServletOutputStream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -32,8 +36,18 @@ public class MedicineItemService {
         return medicineItemRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No Medicine Item found with this id."));
     }
 
-    public Page<CustomMedicineItemDTO> findAllWithCustomPage(String name, int actualPage, int sizePage, String initialDate, String finalDate, String conclusion) {
-        Pageable pageable = PageRequest.of(actualPage,sizePage);
+    public Page<CustomMedicineItemDTO> findAllWithCustomPage(
+            String name,
+            int actualPage,
+            int sizePage,
+            String initialDate,
+            String finalDate,
+            String conclusion,
+            FieldSortMedicineItem fieldSort,
+            TypeSortMedicineItem typeSort) {
+        Sort sort = generateSort(fieldSort, typeSort);
+        Pageable pageable = PageRequest.of(actualPage,sizePage,sort);
+
         User user = securityService.getAuthenticatedUser();
 
         if (initialDate!= null && finalDate != null) {
@@ -48,6 +62,15 @@ public class MedicineItemService {
             return medicineRepository.findCustomMedicineItemsWithPagination(name.toUpperCase(), user, Boolean.parseBoolean(conclusion), pageable);
         }
         return medicineRepository.findCustomMedicineItemsWithPagination(name.toUpperCase(), user, pageable);
+    }
+
+    private Sort generateSort(FieldSortMedicineItem fieldSort,
+                              TypeSortMedicineItem typeSort) {
+        System.out.println(typeSort);
+        System.out.println(fieldSort.getDescription());
+        Sort.Direction direction = typeSort.equals(TypeSortMedicineItem.ASC) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        String field = fieldSort.getDescription();
+        return Sort.by(direction,field);
     }
 
     public List<MedicineItem> findAll() {

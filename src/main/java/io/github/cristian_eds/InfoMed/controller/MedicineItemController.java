@@ -1,9 +1,8 @@
 package io.github.cristian_eds.InfoMed.controller;
 
-import io.github.cristian_eds.InfoMed.controller.dto.CustomMedicineItemDTO;
-import io.github.cristian_eds.InfoMed.controller.dto.MedicineItemResponseDTO;
-import io.github.cristian_eds.InfoMed.controller.dto.MedicineItemUpdateDTO;
-import io.github.cristian_eds.InfoMed.controller.dto.MedicineResponseDTO;
+import io.github.cristian_eds.InfoMed.controller.dto.*;
+import io.github.cristian_eds.InfoMed.models.enums.FieldSortMedicineItem;
+import io.github.cristian_eds.InfoMed.models.enums.TypeSortMedicineItem;
 import io.github.cristian_eds.InfoMed.service.MedicineItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -46,8 +45,11 @@ public class MedicineItemController {
                                                                             @RequestParam(value = "sizePage", required = false, defaultValue = "6") int sizePage,
                                                                             @RequestParam(value = "initialDate", required = false) String initialDate,
                                                                             @RequestParam(value = "finalDate", required = false) String finalDate,
-                                                                            @RequestParam(value = "conclusion", required = false) String conclusion) {
-        return ResponseEntity.ok(medicineItemService.findAllWithCustomPage(name,actualPage,sizePage, initialDate,finalDate,conclusion));
+                                                                            @RequestParam(value = "conclusion", required = false) String conclusion,
+                                                                            @RequestParam(value = "fieldSort", required = false, defaultValue = "DAY_HOUR") FieldSortMedicineItem fieldSort,
+                                                                            @RequestParam(value = "typeSort", required = false , defaultValue = "ASC")TypeSortMedicineItem typeSort) {
+
+        return ResponseEntity.ok(medicineItemService.findAllWithCustomPage(name,actualPage,sizePage, initialDate,finalDate,conclusion,fieldSort,typeSort));
     }
 
     @DeleteMapping("/{id}")
