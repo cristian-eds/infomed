@@ -6,10 +6,9 @@ import io.github.cristian_eds.InfoMed.models.Medicine;
 import io.github.cristian_eds.InfoMed.models.MedicineItem;
 import io.github.cristian_eds.InfoMed.models.User;
 import io.github.cristian_eds.InfoMed.models.enums.FieldSortMedicineItem;
-import io.github.cristian_eds.InfoMed.models.enums.TypeSortMedicineItem;
+import io.github.cristian_eds.InfoMed.models.enums.TypeSort;
 import io.github.cristian_eds.InfoMed.repository.MedicineItemRepository;
 import io.github.cristian_eds.InfoMed.repository.MedicineRepository;
-import jakarta.servlet.ServletOutputStream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -44,7 +43,7 @@ public class MedicineItemService {
             String finalDate,
             String conclusion,
             FieldSortMedicineItem fieldSort,
-            TypeSortMedicineItem typeSort) {
+            TypeSort typeSort) {
         Sort sort = generateSort(fieldSort, typeSort);
         Pageable pageable = PageRequest.of(actualPage,sizePage,sort);
 
@@ -65,10 +64,10 @@ public class MedicineItemService {
     }
 
     private Sort generateSort(FieldSortMedicineItem fieldSort,
-                              TypeSortMedicineItem typeSort) {
+                              TypeSort typeSort) {
         System.out.println(typeSort);
         System.out.println(fieldSort.getDescription());
-        Sort.Direction direction = typeSort.equals(TypeSortMedicineItem.ASC) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort.Direction direction = typeSort.equals(TypeSort.ASC) ? Sort.Direction.ASC : Sort.Direction.DESC;
         String field = fieldSort.getDescription();
         return Sort.by(direction,field);
     }
