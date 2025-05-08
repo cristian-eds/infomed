@@ -55,4 +55,5 @@ public interface MedicineRepository extends JpaRepository<Medicine, UUID>, JpaSp
             @Param("startDateTime")LocalDateTime startDateTime,
             @Param("finalDateTime") LocalDateTime finalDateTime,
             org.springframework.data.domain.Pageable pageable);
+
 }

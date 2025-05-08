@@ -26,7 +26,7 @@ public class MedicineController {
     private final MedicineService medicineService;
 
     @PostMapping
-    public ResponseEntity<List<CustomMedicineItemDTO>> create(@RequestBody @Valid CreateMedicineDTO createMedicineDTO) {
+    public ResponseEntity<MedicineResponseDTO> create(@RequestBody @Valid CreateMedicineDTO createMedicineDTO) {
         LocalDateTime initialLocalDateTime = LocalDateTime.parse(createMedicineDTO.initialDateTime());
 
         Medicine medicine = CreateMedicineDTO.toEntity(createMedicineDTO);
@@ -34,7 +34,7 @@ public class MedicineController {
 
         URI location = GenerateURILocation.generateURI(medicineSaved.id());
 
-        return ResponseEntity.created(location).body(CustomMedicineItemDTO.fromMedicineResponseDTO(medicineSaved));
+        return ResponseEntity.created(location).body(medicineSaved);
     }
 
     @GetMapping
