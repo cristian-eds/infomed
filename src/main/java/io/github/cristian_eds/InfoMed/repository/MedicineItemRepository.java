@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public interface MedicineItemRepository extends JpaRepository<MedicineItem, UUID> {
 
-    @Query("SELECT mi FROM MedicineItem mi JOIN mi.medicine m  WHERE mi.dayHour >= CURRENT_TIMESTAMP AND m.user = :user ORDER BY mi.dayHour ASC LIMIT 1")
+    @Query("SELECT mi FROM MedicineItem mi JOIN mi.medicine m  WHERE mi.dayHour >= CURRENT_TIMESTAMP AND m.user = :user AND mi.conclusion = false ORDER BY mi.dayHour ASC LIMIT 1")
     Optional<MedicineItem> findFirstByDayHourGreaterThanEqualNow(@Param("user") User user);
 
     List<MedicineItem> findByMedicine(Medicine medicine);

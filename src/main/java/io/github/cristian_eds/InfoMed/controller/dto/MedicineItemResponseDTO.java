@@ -11,6 +11,7 @@ public record MedicineItemResponseDTO(
         LocalDateTime dayHour,
         Boolean conclusion,
         LocalDateTime conclusionDayHour,
+        String name,
         UUID medicine
 ) {
     public static MedicineItemResponseDTO fromEntity(MedicineItem medicineItem) {
@@ -20,6 +21,7 @@ public record MedicineItemResponseDTO(
                 medicineItem.getDayHour(),
                 medicineItem.getConclusion(),
                 medicineItem.getConclusionDayHour(),
+                medicineItem.getMedicine().getName(),
                 medicineItem.getMedicine().getId()
         );
     }
