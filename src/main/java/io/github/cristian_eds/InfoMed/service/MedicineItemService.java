@@ -15,7 +15,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.sound.midi.Soundbank;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -57,7 +59,7 @@ public class MedicineItemService {
             }
             return medicineRepository.findCustomMedicineItemsWithPagination(name.toUpperCase(),user,startDateTime,finalDateTime, pageable);
         }
-        if(conclusion != null ) {
+        if(conclusion != null && !conclusion.equals("TODOS")) {
             return medicineRepository.findCustomMedicineItemsWithPagination(name.toUpperCase(), user, Boolean.parseBoolean(conclusion), pageable);
         }
         return medicineRepository.findCustomMedicineItemsWithPagination(name.toUpperCase(), user, pageable);
@@ -65,8 +67,6 @@ public class MedicineItemService {
 
     private Sort generateSort(FieldSortMedicineItem fieldSort,
                               TypeSort typeSort) {
-        System.out.println(typeSort);
-        System.out.println(fieldSort.getDescription());
         Sort.Direction direction = typeSort.equals(TypeSort.ASC) ? Sort.Direction.ASC : Sort.Direction.DESC;
         String field = fieldSort.getDescription();
         return Sort.by(direction,field);
@@ -76,8 +76,24 @@ public class MedicineItemService {
         return medicineItemRepository.findAll();
     }
 
+    @Transactional
     public void deleteById(UUID id) {
-        medicineItemRepository.deleteById(id);
+        MedicineItem medicineItem = findById(id);
+        Medicine medicine = medicineItem.getMedicine();
+        medicineItemRepository.delete(medicineItem);
+
+        List<MedicineItem> list = medicineItemRepository.findByMedicine(medicine);
+        if(list.isEmpty()) {
+            medicineRepository.delete(medicine);
+            return;
+        }
+        updateSequenceItems(list);
+    }
+
+    private void updateSequenceItems(List<MedicineItem> list) {
+            for (int i = 0; i < list.size(); i++) {
+                list.get(i).setMedicineItemSequence(i+1);
+            }
     }
 
     public MedicineItem alterStatusConclusion(UUID id) {
