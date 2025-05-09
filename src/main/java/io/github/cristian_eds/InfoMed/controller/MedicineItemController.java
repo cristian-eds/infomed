@@ -80,11 +80,11 @@ public class MedicineItemController {
     }
 
     @GetMapping("/next")
-    public ResponseEntity<MedicineItemResponseDTO> getNextMedicineItem() {
+    public ResponseEntity<CustomMedicineItemDTO> getNextMedicineItem() {
         return medicineItemService
                 .findNextMedicine().map(
                         medicineItem ->
-                                ResponseEntity.ok(MedicineItemResponseDTO.fromEntity(medicineItem))).orElse(
+                                ResponseEntity.ok(CustomMedicineItemDTO.fromMedicineItem(medicineItem))).orElse(
                                 ResponseEntity.noContent().build()
         );
     }
