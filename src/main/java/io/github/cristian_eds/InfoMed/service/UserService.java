@@ -8,6 +8,7 @@ import io.github.cristian_eds.InfoMed.models.User;
 import io.github.cristian_eds.InfoMed.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -39,9 +40,7 @@ public class UserService {
 
     public void changePassword(UUID uuid, ChangeUserPasswordDTO changeUserPasswordDTO) {
         User userFound = findById(uuid);
-        System.out.println("Passou aqui");
         if(passwordEncoder.matches(changeUserPasswordDTO.currentPassword(),userFound.getPassword())) {
-            System.out.println("Senhas conferem");
             userFound.setPassword(passwordEncoder.encode(changeUserPasswordDTO.newPassword()));
         } else {
             throw new IncorrectPasswordException("Incorrect password. Check!");

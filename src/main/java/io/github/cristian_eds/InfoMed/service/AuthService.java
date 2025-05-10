@@ -19,7 +19,6 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenService jwtTokenService;
-    private final AuthenticationManager authenticationManager;
 
     public TokenDTO login(String email, String password) {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User with email not found"));

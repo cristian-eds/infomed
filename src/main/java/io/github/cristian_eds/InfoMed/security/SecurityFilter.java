@@ -33,7 +33,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             String email = jwtTokenService.validateToken(token);
             User user = userRepository.findByEmail(email).orElse(null);
             if(user != null){
-                var authentication = new UsernamePasswordAuthenticationToken(user,null,List.of(new SimpleGrantedAuthority("Role_ADMIN")));
+                var authentication = new UsernamePasswordAuthenticationToken(user,null,List.of(new SimpleGrantedAuthority(user.getRole().toString())));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }

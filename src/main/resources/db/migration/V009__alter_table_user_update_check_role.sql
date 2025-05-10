@@ -1,0 +1,5 @@
+ALTER TABLE tb_user
+DROP CONSTRAINT IF EXISTS chk_role;
+
+ALTER TABLE tb_user
+ADD CONSTRAINT chk_role CHECK (role IN ('USER', 'ADMIN', 'GUEST'));

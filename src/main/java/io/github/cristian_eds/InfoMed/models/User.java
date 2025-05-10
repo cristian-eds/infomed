@@ -1,5 +1,6 @@
 package io.github.cristian_eds.InfoMed.models;
 
+import io.github.cristian_eds.InfoMed.models.enums.Role;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -22,4 +23,7 @@ public class User {
 
     @Column(nullable = false)
     private String name;
+
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
 }
