@@ -1,9 +1,8 @@
 package io.github.cristian_eds.InfoMed.controller.dto;
 
 import io.github.cristian_eds.InfoMed.models.User;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import io.github.cristian_eds.InfoMed.models.enums.Role;
+import jakarta.validation.constraints.*;
 
 public record UserDTO(
         @Email(message = "Insert a valid email")
@@ -16,7 +15,9 @@ public record UserDTO(
         String password,
         @Size(max = 150, message = "Insert a valid name.")
         @NotBlank(message = "Insert a valid name.")
-        String name
+        String name,
+        @NotNull(message = "Insert a valid role.")
+        Role role
 ){
 
     public static User toEntity(UserDTO userDTO) {
@@ -24,6 +25,7 @@ public record UserDTO(
         user.setEmail(userDTO.email);
         user.setPassword(userDTO.password);
         user.setName(userDTO.name);
+        user.setRole(userDTO.role);
         return user;
     }
 }

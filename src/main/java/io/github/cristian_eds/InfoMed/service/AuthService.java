@@ -25,7 +25,7 @@ public class AuthService {
 
         if (checkPasswordsMatches(password, user.getPassword())){
             var authUsernamePassword = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
-            return jwtTokenService.generateToken(email);
+            return jwtTokenService.generateToken(user);
         } else {
             throw new InvalidLoginException("Incorrect password.");
         }
