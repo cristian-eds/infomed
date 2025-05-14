@@ -7,10 +7,9 @@ import io.github.cristian_eds.InfoMed.service.PersonService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/person")
@@ -22,5 +21,11 @@ public class PersonController {
     @PostMapping
     public ResponseEntity<PersonResponseDTO> create(@RequestBody @Valid CreatePersonDTO person){
         return ResponseEntity.ok(PersonResponseDTO.fromEntity(personService.save(person)));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PersonResponseDTO>> getAll() {
+        List<PersonResponseDTO> list = personService.findAll().stream().map(PersonResponseDTO::fromEntity).toList();
+        return ResponseEntity.ok(list);
     }
 }

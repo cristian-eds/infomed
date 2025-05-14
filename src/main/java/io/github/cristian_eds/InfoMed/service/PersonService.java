@@ -24,6 +24,6 @@ public class PersonService {
     }
 
     public List<Person> findAll() {
-
+        return personRepository.findByUserFather(securityService.getAuthenticatedUser());
     }
 }

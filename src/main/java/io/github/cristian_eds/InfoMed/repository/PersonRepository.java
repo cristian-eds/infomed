@@ -9,5 +9,5 @@ import java.util.UUID;
 
 public interface PersonRepository extends JpaRepository<Person, UUID> {
 
-    List<Person> findByUser(User user);
+    List<Person> findByUserFather(User user);
 }
