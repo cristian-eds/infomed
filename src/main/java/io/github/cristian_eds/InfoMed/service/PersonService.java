@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -25,5 +27,9 @@ public class PersonService {
 
     public List<Person> findAll() {
         return personRepository.findByUserFather(securityService.getAuthenticatedUser());
+    }
+
+    public Optional<Person> findById(UUID id) {
+        return personRepository.findByUserFatherAndId(securityService.getAuthenticatedUser(),id);
     }
 }

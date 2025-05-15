@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/person")
@@ -27,5 +28,13 @@ public class PersonController {
     public ResponseEntity<List<PersonResponseDTO>> getAll() {
         List<PersonResponseDTO> list = personService.findAll().stream().map(PersonResponseDTO::fromEntity).toList();
         return ResponseEntity.ok(list);
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<PersonResponseDTO> getById(@PathVariable("id") String id) {
+        UUID uuid = UUID.fromString(id);
+        return personService.findById(uuid).map(
+                person -> ResponseEntity.ok(PersonResponseDTO.fromEntity(person)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
