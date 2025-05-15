@@ -1,15 +1,17 @@
 package io.github.cristian_eds.InfoMed.controller;
 
 import io.github.cristian_eds.InfoMed.controller.dto.CreatePersonDTO;
+import io.github.cristian_eds.InfoMed.controller.dto.PaginationRequestDTO;
 import io.github.cristian_eds.InfoMed.controller.dto.PersonResponseDTO;
-import io.github.cristian_eds.InfoMed.models.Person;
 import io.github.cristian_eds.InfoMed.service.PersonService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -25,9 +27,9 @@ public class PersonController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PersonResponseDTO>> getAll() {
-        List<PersonResponseDTO> list = personService.findAll().stream().map(PersonResponseDTO::fromEntity).toList();
-        return ResponseEntity.ok(list);
+    public ResponseEntity<Page<PersonResponseDTO>> getAll(PaginationRequestDTO paginationRequest) {
+        Pageable pageable = PageRequest.of(paginationRequest.actualPage(), paginationRequest.sizePage());
+        return ResponseEntity.ok(personService.findAll(pageable));
     }
 
     @GetMapping("{id}")

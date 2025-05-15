@@ -1,10 +1,13 @@
 package io.github.cristian_eds.InfoMed.service;
 
 import io.github.cristian_eds.InfoMed.controller.dto.CreatePersonDTO;
+import io.github.cristian_eds.InfoMed.controller.dto.PersonResponseDTO;
 import io.github.cristian_eds.InfoMed.models.Person;
 import io.github.cristian_eds.InfoMed.models.User;
 import io.github.cristian_eds.InfoMed.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,8 +28,8 @@ public class PersonService {
         return  personRepository.save(person);
     }
 
-    public List<Person> findAll() {
-        return personRepository.findByUserFather(securityService.getAuthenticatedUser());
+    public Page<PersonResponseDTO> findAll(Pageable pageable) {
+        return personRepository.findByUserFather(securityService.getAuthenticatedUser(), pageable);
     }
 
     public Optional<Person> findById(UUID id) {
