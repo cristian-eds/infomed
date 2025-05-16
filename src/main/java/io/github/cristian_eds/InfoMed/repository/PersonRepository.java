@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public interface PersonRepository extends JpaRepository<Person, UUID> {
 
-    Page<PersonResponseDTO> findByUserFather(User user, Pageable pageable);
+    Page<Person> findByUserFather(User user, Pageable pageable);
 
     Optional<Person> findByUserFatherAndId(User user, UUID id);
 }

@@ -1,6 +1,7 @@
 package io.github.cristian_eds.InfoMed.service;
 
 import io.github.cristian_eds.InfoMed.controller.dto.CreatePersonDTO;
+import io.github.cristian_eds.InfoMed.controller.dto.PagedResponseDTO;
 import io.github.cristian_eds.InfoMed.controller.dto.PersonResponseDTO;
 import io.github.cristian_eds.InfoMed.models.Person;
 import io.github.cristian_eds.InfoMed.models.User;
@@ -28,8 +29,18 @@ public class PersonService {
         return  personRepository.save(person);
     }
 
-    public Page<PersonResponseDTO> findAll(Pageable pageable) {
-        return personRepository.findByUserFather(securityService.getAuthenticatedUser(), pageable);
+    public PagedResponseDTO<PersonResponseDTO> findAll(Pageable pageable) {
+        Page<Person> pageResult = personRepository.findByUserFather(securityService.getAuthenticatedUser(), pageable);
+        List<PersonResponseDTO> responseDTOList = pageResult.getContent().stream().map(
+                PersonResponseDTO::fromEntity
+        ).toList();
+        return new PagedResponseDTO<>(
+                responseDTOList,
+                pageResult.getTotalElements(),
+                pageResult.getTotalPages(),
+                pageResult.getNumber(),
+                pageResult.getSize()
+        );
     }
 
     public Optional<Person> findById(UUID id) {

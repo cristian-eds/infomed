@@ -18,7 +18,7 @@ public record PersonResponseDTO (
                 PersonResponseDTO(
                         person.getId(),
                         person.getName(),
-                        person.getBirthDate().format(DateTimeFormatter.ofPattern("dd/MM/yyy")),
+                        person.getBirthDate() != null ? person.getBirthDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")): "",
                         person.getPhone(),
                         person.getAccessCode());
     }
