@@ -3,6 +3,7 @@ package io.github.cristian_eds.InfoMed.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -18,6 +19,11 @@ public class Person {
 
     @Column(name = "access_code")
     private String accessCode;
+
+    @Column(name = "birth_date")
+    private LocalDate birthDate;
+
+    private String phone;
 
     @ManyToOne
     @JoinColumn(name = "id_user_father")

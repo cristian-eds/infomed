@@ -1,0 +1,5 @@
+ALTER TABLE person
+ADD COLUMN birth_date TIMESTAMP;
+
+ALTER TABLE person
+ADD COLUMN phone VARCHAR(15);
