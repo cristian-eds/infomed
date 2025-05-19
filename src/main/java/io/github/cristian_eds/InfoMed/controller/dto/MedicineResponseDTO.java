@@ -1,6 +1,7 @@
 package io.github.cristian_eds.InfoMed.controller.dto;
 
 import io.github.cristian_eds.InfoMed.models.Medicine;
+import io.github.cristian_eds.InfoMed.models.Person;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,7 +13,8 @@ public record MedicineResponseDTO(
         Double totalDays,
         Double frequencyHours,
         List<MedicineItemResponseDTO> medicineItems,
-        LocalDateTime registrationDate
+        LocalDateTime registrationDate,
+        Person person
 ) {
 
     public static MedicineResponseDTO fromEntity(Medicine medicine) {
@@ -22,7 +24,8 @@ public record MedicineResponseDTO(
                 medicine.getTotalDays(),
                 medicine.getFrequencyHours(),
                 medicine.getMedicineItems().stream().map(MedicineItemResponseDTO::fromEntity).toList(),
-                medicine.getRegistrationDate()
+                medicine.getRegistrationDate(),
+                medicine.getPerson()
         );
     }
 }

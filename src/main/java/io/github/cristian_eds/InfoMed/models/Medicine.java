@@ -32,6 +32,10 @@ public class Medicine {
     @JoinColumn(name = "id_user")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "id_person")
+    private Person person;
+
     @CreatedDate
     private LocalDateTime registrationDate;
 

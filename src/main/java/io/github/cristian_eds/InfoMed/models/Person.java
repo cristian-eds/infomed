@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -29,5 +30,7 @@ public class Person {
     @JoinColumn(name = "id_user_father")
     private User userFather;
 
+    @OneToMany(mappedBy = "person")
+    private List<Medicine> medicines;
 
 }
