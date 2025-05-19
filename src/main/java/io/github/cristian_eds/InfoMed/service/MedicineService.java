@@ -5,6 +5,7 @@ import io.github.cristian_eds.InfoMed.controller.dto.MedicineResponseDTO;
 import io.github.cristian_eds.InfoMed.controller.dto.MedicineUpdateDTO;
 import io.github.cristian_eds.InfoMed.models.Medicine;
 import io.github.cristian_eds.InfoMed.models.MedicineItem;
+import io.github.cristian_eds.InfoMed.models.Person;
 import io.github.cristian_eds.InfoMed.models.User;
 import io.github.cristian_eds.InfoMed.repository.MedicineRepository;
 import io.github.cristian_eds.InfoMed.repository.specs.MedicineSpecs;
@@ -17,6 +18,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLOutput;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -30,14 +32,21 @@ public class MedicineService {
     private final MedicineRepository medicineRepository;
     private final MedicineItemService medicineItemService;
     private final SecurityService securityService;
+    private final PersonService personService;
 
     @Transactional
     public Medicine create(Medicine medicine, LocalDateTime initialTime) {
-        Medicine medicineSaved =  medicineRepository.save(medicine);
         User user = securityService.getAuthenticatedUser();
-        medicineSaved.setUser(user);
+        medicine.setUser(user);
+
+        Person person = personService.findById(medicine.getPerson().getId()).orElseGet(() -> null);
+        medicine.setPerson(person);
+
+        Medicine medicineSaved =  medicineRepository.save(medicine);
+
         List<MedicineItem> items = medicineItemService.generateItens(medicineSaved, initialTime);
         medicineSaved.setMedicineItems(items);
+
         return medicineSaved;
     }
 
