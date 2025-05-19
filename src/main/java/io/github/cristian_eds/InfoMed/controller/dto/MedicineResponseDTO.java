@@ -14,7 +14,7 @@ public record MedicineResponseDTO(
         Double frequencyHours,
         List<MedicineItemResponseDTO> medicineItems,
         LocalDateTime registrationDate,
-        Person person
+        PersonResponseDTO person
 ) {
 
     public static MedicineResponseDTO fromEntity(Medicine medicine) {
@@ -25,7 +25,7 @@ public record MedicineResponseDTO(
                 medicine.getFrequencyHours(),
                 medicine.getMedicineItems().stream().map(MedicineItemResponseDTO::fromEntity).toList(),
                 medicine.getRegistrationDate(),
-                medicine.getPerson()
+                PersonResponseDTO.fromEntity(medicine.getPerson())
         );
     }
 }

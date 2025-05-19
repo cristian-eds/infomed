@@ -16,7 +16,8 @@ public record CustomMedicineItemDTO(
         Double frequency,
         LocalDateTime dayHour,
         boolean conclusion,
-        LocalDateTime conclusionDayHour
+        LocalDateTime conclusionDayHour,
+        String personName
 
 ) {
     public static List<CustomMedicineItemDTO> fromMedicineResponseDTO(MedicineResponseDTO medicineResponseDTO) {
@@ -30,7 +31,8 @@ public record CustomMedicineItemDTO(
                         medicineResponseDTO.frequencyHours(),
                         medicineItem.dayHour(),
                         medicineItem.conclusion(),
-                        medicineItem.conclusionDayHour()
+                        medicineItem.conclusionDayHour(),
+                        medicineResponseDTO.person().name()
                 )).toList();
     }
 
@@ -50,7 +52,8 @@ public record CustomMedicineItemDTO(
                                                     medicine.frequencyHours(),
                                                     medicineItem.dayHour(),
                                                     medicineItem.conclusion(),
-                                                    medicineItem.conclusionDayHour()
+                                                    medicineItem.conclusionDayHour(),
+                                                    medicineItem.personName()
                                             )
                                     )
                     );
@@ -71,7 +74,8 @@ public record CustomMedicineItemDTO(
                 medicineItem.getMedicine().getFrequencyHours(),
                 medicineItem.getDayHour(),
                 medicineItem.getConclusion(),
-                medicineItem.getConclusionDayHour()
+                medicineItem.getConclusionDayHour(),
+                medicineItem.getMedicine().getPerson().getName()
         );
     }
 }
