@@ -1,9 +1,11 @@
 package io.github.cristian_eds.InfoMed.controller;
 
+import io.github.cristian_eds.InfoMed.controller.common.GenerateURILocation;
 import io.github.cristian_eds.InfoMed.controller.dto.CreatePersonDTO;
 import io.github.cristian_eds.InfoMed.controller.dto.PagedResponseDTO;
 import io.github.cristian_eds.InfoMed.controller.dto.PaginationRequestDTO;
 import io.github.cristian_eds.InfoMed.controller.dto.PersonResponseDTO;
+import io.github.cristian_eds.InfoMed.models.Person;
 import io.github.cristian_eds.InfoMed.service.PersonService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.UUID;
 
 @RestController
@@ -24,7 +27,9 @@ public class PersonController {
 
     @PostMapping
     public ResponseEntity<PersonResponseDTO> create(@RequestBody @Valid CreatePersonDTO person){
-        return ResponseEntity.ok(PersonResponseDTO.fromEntity(personService.save(person)));
+        Person personSaved = personService.save(person);
+        URI location = GenerateURILocation.generateURI(personSaved.getId());
+        return ResponseEntity.created(location).body(PersonResponseDTO.fromEntity(personSaved));
     }
 
     @GetMapping
