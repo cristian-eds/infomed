@@ -59,11 +59,14 @@ public class MedicineService {
         Specification<Medicine> specs = Specification.where(
                 (root, query, criteriaBuilder) ->
                         criteriaBuilder.conjunction());
+
         if (name != null) specs = specs.and(MedicineSpecs.nameLike(name));
+
         User user = securityService.getAuthenticatedUser();
         specs = specs.and(MedicineSpecs.userEquals(user));
 
         Pageable pageable = PageRequest.of(actualPage,sizePage);
+
         Page<Medicine> medicinePage = medicineRepository.findAll(specs,pageable);
         return convertPageMedicineToPageMedicineResponseDTO(medicinePage,pageable);
     }

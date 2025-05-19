@@ -53,7 +53,7 @@ public record CustomMedicineItemDTO(
                                                     medicineItem.dayHour(),
                                                     medicineItem.conclusion(),
                                                     medicineItem.conclusionDayHour(),
-                                                    medicineItem.personName()
+                                                    medicine.person().name()
                                             )
                                     )
                     );
@@ -75,7 +75,7 @@ public record CustomMedicineItemDTO(
                 medicineItem.getDayHour(),
                 medicineItem.getConclusion(),
                 medicineItem.getConclusionDayHour(),
-                medicineItem.getMedicine().getPerson().getName()
+                medicineItem.getMedicine().getPerson() != null ? medicineItem.getMedicine().getPerson().getName() : ""
         );
     }
 }

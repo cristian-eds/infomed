@@ -19,7 +19,7 @@ public interface MedicineRepository extends JpaRepository<Medicine, UUID>, JpaSp
     List<Medicine> findByNameContainingIgnoreCase(String name);
 
     @Query("SELECT new io.github.cristian_eds.InfoMed.controller.dto.CustomMedicineItemDTO(m.id, mi.id, m.name, mi.medicineItemSequence, SIZE(m.medicineItems), m.frequencyHours, mi.dayHour, mi.conclusion, mi.conclusionDayHour, p.name) "+
-    " FROM Medicine m JOIN m.medicineItems mi JOIN m.person p " +
+    " FROM Medicine m JOIN m.medicineItems mi LEFT JOIN m.person p " +
             "WHERE UPPER(m.name) LIKE %:name% AND m.user = :user ")
     Page<CustomMedicineItemDTO> findCustomMedicineItemsWithPagination(
             @Param("name") String name,
@@ -27,7 +27,7 @@ public interface MedicineRepository extends JpaRepository<Medicine, UUID>, JpaSp
             org.springframework.data.domain.Pageable pageable);
 
     @Query("SELECT new io.github.cristian_eds.InfoMed.controller.dto.CustomMedicineItemDTO(m.id, mi.id, m.name, mi.medicineItemSequence, SIZE(m.medicineItems), m.frequencyHours, mi.dayHour, mi.conclusion, mi.conclusionDayHour, p.name) "+
-            " FROM Medicine m JOIN m.medicineItems mi JOIN m.person p " +
+            " FROM Medicine m JOIN m.medicineItems mi LEFT JOIN m.person p " +
             "WHERE UPPER(m.name) LIKE %:name% AND m.user = :user AND mi.dayHour BETWEEN :startDateTime AND :finalDateTime ")
     Page<CustomMedicineItemDTO> findCustomMedicineItemsWithPagination(
             @Param("name") String name,
@@ -37,7 +37,7 @@ public interface MedicineRepository extends JpaRepository<Medicine, UUID>, JpaSp
             org.springframework.data.domain.Pageable pageable);
 
     @Query("SELECT new io.github.cristian_eds.InfoMed.controller.dto.CustomMedicineItemDTO(m.id, mi.id, m.name, mi.medicineItemSequence, SIZE(m.medicineItems), m.frequencyHours, mi.dayHour, mi.conclusion, mi.conclusionDayHour, p.name) "+
-            " FROM Medicine m JOIN m.medicineItems mi JOIN m.person p " +
+            " FROM Medicine m LEFT JOIN m.medicineItems mi LEFT JOIN m.person p " +
             "WHERE UPPER(m.name) LIKE %:name% AND m.user = :user AND mi.conclusion = :conclusion ")
     Page<CustomMedicineItemDTO> findCustomMedicineItemsWithPagination(
             @Param("name") String name,
@@ -46,7 +46,7 @@ public interface MedicineRepository extends JpaRepository<Medicine, UUID>, JpaSp
             org.springframework.data.domain.Pageable pageable);
 
     @Query("SELECT new io.github.cristian_eds.InfoMed.controller.dto.CustomMedicineItemDTO(m.id, mi.id, m.name, mi.medicineItemSequence, SIZE(m.medicineItems), m.frequencyHours, mi.dayHour, mi.conclusion, mi.conclusionDayHour, p.name) "+
-            " FROM Medicine m JOIN m.medicineItems mi JOIN m.person p " +
+            " FROM Medicine m LEFT JOIN m.medicineItems mi LEFT JOIN m.person p " +
             "WHERE UPPER(m.name) LIKE %:name% AND m.user = :user AND mi.conclusion = :conclusion AND mi.dayHour BETWEEN :startDateTime AND :finalDateTime ")
     Page<CustomMedicineItemDTO> findCustomMedicineItemsWithPagination(
             @Param("name") String name,

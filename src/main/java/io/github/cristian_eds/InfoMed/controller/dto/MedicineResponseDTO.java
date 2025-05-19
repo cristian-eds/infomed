@@ -25,7 +25,7 @@ public record MedicineResponseDTO(
                 medicine.getFrequencyHours(),
                 medicine.getMedicineItems().stream().map(MedicineItemResponseDTO::fromEntity).toList(),
                 medicine.getRegistrationDate(),
-                PersonResponseDTO.fromEntity(medicine.getPerson())
+                medicine.getPerson() != null ? PersonResponseDTO.fromEntity(medicine.getPerson()): null
         );
     }
 }
