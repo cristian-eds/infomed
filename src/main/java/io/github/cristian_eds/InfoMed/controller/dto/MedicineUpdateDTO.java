@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public record MedicineUpdateDTO(
         @NotBlank(message = "Insert a valid name")
-        String name
+        String name,
+        String idPerson
 ) {
 }

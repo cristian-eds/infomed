@@ -78,6 +78,12 @@ public class MedicineService {
     public Medicine update(UUID id, MedicineUpdateDTO medicineUpdateDTO) {
         Medicine medicine = findById(id).orElseThrow(() -> new NoSuchElementException("No Medicine found with this Id"));
         medicine.setName(medicineUpdateDTO.name());
+        if(medicineUpdateDTO.idPerson() != null) {
+            Person person = personService.findById(UUID.fromString(medicineUpdateDTO.idPerson())).orElseThrow( () -> new NoSuchElementException("Person not found"));
+            if (!person.equals(medicine.getPerson())) {
+                medicine.setPerson(person);
+            }
+        }
         return medicineRepository.save(medicine);
     }
 
