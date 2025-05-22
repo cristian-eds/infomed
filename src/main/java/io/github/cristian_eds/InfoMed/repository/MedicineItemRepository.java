@@ -2,6 +2,7 @@ package io.github.cristian_eds.InfoMed.repository;
 
 import io.github.cristian_eds.InfoMed.models.Medicine;
 import io.github.cristian_eds.InfoMed.models.MedicineItem;
+import io.github.cristian_eds.InfoMed.models.Person;
 import io.github.cristian_eds.InfoMed.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +16,9 @@ public interface MedicineItemRepository extends JpaRepository<MedicineItem, UUID
 
     @Query("SELECT mi FROM MedicineItem mi JOIN mi.medicine m  WHERE mi.dayHour >= CURRENT_TIMESTAMP AND m.user = :user AND mi.conclusion = false ORDER BY mi.dayHour ASC LIMIT 1")
     Optional<MedicineItem> findFirstByDayHourGreaterThanEqualNow(@Param("user") User user);
+
+    @Query("SELECT mi FROM MedicineItem mi JOIN mi.medicine m WHERE mi.dayHour >= CURRENT_TIMESTAMP AND m.user = :user AND mi.conclusion = false AND m.person = :person ORDER BY mi.dayHour ASC LIMIT 1")
+    Optional<MedicineItem> findFirstByDayHourGreaterThanEqualNowByPerson(@Param("user") User user, @Param("person") Person person);
 
     List<MedicineItem> findByMedicine(Medicine medicine);
 }

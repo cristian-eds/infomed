@@ -1,10 +1,7 @@
 package io.github.cristian_eds.InfoMed.controller;
 
 import io.github.cristian_eds.InfoMed.controller.common.GenerateURILocation;
-import io.github.cristian_eds.InfoMed.controller.dto.CreatePersonDTO;
-import io.github.cristian_eds.InfoMed.controller.dto.PagedResponseDTO;
-import io.github.cristian_eds.InfoMed.controller.dto.PaginationRequestDTO;
-import io.github.cristian_eds.InfoMed.controller.dto.PersonResponseDTO;
+import io.github.cristian_eds.InfoMed.controller.dto.*;
 import io.github.cristian_eds.InfoMed.models.Person;
 import io.github.cristian_eds.InfoMed.service.PersonService;
 import jakarta.validation.Valid;
@@ -33,7 +30,7 @@ public class PersonController {
     }
 
     @GetMapping
-    public ResponseEntity<PagedResponseDTO<PersonResponseDTO>> getAll(PaginationRequestDTO paginationRequest) {
+    public ResponseEntity<PagedResponseDTO<CustomPersonResponseDTO>> getAll(PaginationRequestDTO paginationRequest) {
         Pageable pageable = PageRequest.of(paginationRequest.actualPage(), paginationRequest.sizePage());
         return ResponseEntity.ok(personService.findAll(pageable));
     }

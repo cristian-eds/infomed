@@ -1,8 +1,7 @@
 package io.github.cristian_eds.InfoMed.service;
 
-import io.github.cristian_eds.InfoMed.controller.dto.CreatePersonDTO;
-import io.github.cristian_eds.InfoMed.controller.dto.PagedResponseDTO;
-import io.github.cristian_eds.InfoMed.controller.dto.PersonResponseDTO;
+import io.github.cristian_eds.InfoMed.controller.dto.*;
+import io.github.cristian_eds.InfoMed.models.MedicineItem;
 import io.github.cristian_eds.InfoMed.models.Person;
 import io.github.cristian_eds.InfoMed.models.User;
 import io.github.cristian_eds.InfoMed.repository.PersonRepository;
@@ -21,6 +20,7 @@ public class PersonService {
 
     private final PersonRepository personRepository;
     private final SecurityService securityService;
+    private final MedicineItemService medicineItemService;
 
     public Person save(CreatePersonDTO personDto) {
         User user =  securityService.getAuthenticatedUser();
@@ -29,11 +29,16 @@ public class PersonService {
         return  personRepository.save(person);
     }
 
-    public PagedResponseDTO<PersonResponseDTO> findAll(Pageable pageable) {
+    public PagedResponseDTO<CustomPersonResponseDTO> findAll(Pageable pageable) {
         Page<Person> pageResult = personRepository.findByUserFather(securityService.getAuthenticatedUser(), pageable);
-        List<PersonResponseDTO> responseDTOList = pageResult.getContent().stream().map(
-                PersonResponseDTO::fromEntity
+        List<CustomPersonResponseDTO> responseDTOList = pageResult.getContent().stream().map(
+                person -> {
+                    MedicineItem medicineItem = medicineItemService.findNextMedicinePerson(person).orElseGet(() -> null);
+                    CustomMedicineItemDTO customMedicineItemDTO = medicineItem != null ? CustomMedicineItemDTO.fromMedicineItem(medicineItem) : null;
+                    return  CustomPersonResponseDTO.fromEntity(person, customMedicineItemDTO);
+                }
         ).toList();
+
         return new PagedResponseDTO<>(
                 responseDTOList,
                 pageResult.getTotalElements(),

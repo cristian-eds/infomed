@@ -4,6 +4,7 @@ import io.github.cristian_eds.InfoMed.controller.dto.CustomMedicineItemDTO;
 import io.github.cristian_eds.InfoMed.controller.dto.MedicineItemUpdateDTO;
 import io.github.cristian_eds.InfoMed.models.Medicine;
 import io.github.cristian_eds.InfoMed.models.MedicineItem;
+import io.github.cristian_eds.InfoMed.models.Person;
 import io.github.cristian_eds.InfoMed.models.User;
 import io.github.cristian_eds.InfoMed.models.enums.FieldSortMedicineItem;
 import io.github.cristian_eds.InfoMed.models.enums.TypeSort;
@@ -152,6 +153,11 @@ public class MedicineItemService {
 
     private int calculateTotalItens(double totalDays, double frequencyHour) {
         return (int) Math.floor(totalDays * 24 / frequencyHour);
+    }
+
+    public Optional<MedicineItem> findNextMedicinePerson(Person person) {
+        User user = securityService.getAuthenticatedUser();
+        return medicineItemRepository.findFirstByDayHourGreaterThanEqualNowByPerson(user,person);
     }
 
 
