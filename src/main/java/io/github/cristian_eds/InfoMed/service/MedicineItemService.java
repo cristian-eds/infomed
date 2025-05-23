@@ -56,14 +56,14 @@ public class MedicineItemService {
             LocalDateTime startDateTime = LocalDateTime.parse(initialDate);
             LocalDateTime finalDateTime = LocalDateTime.parse(finalDate);
             if(conclusion != null) {
-                return medicineRepository.findCustomMedicineItemsWithPagination(name.toUpperCase(),user,Boolean.parseBoolean(conclusion),startDateTime,finalDateTime,pageable);
+                return medicineRepository.findCustomMedicineItemsWithPagination(name.toUpperCase(),name.toUpperCase(),user,Boolean.parseBoolean(conclusion),startDateTime,finalDateTime,pageable);
             }
-            return medicineRepository.findCustomMedicineItemsWithPagination(name.toUpperCase(),user,startDateTime,finalDateTime, pageable);
+            return medicineRepository.findCustomMedicineItemsWithPagination(name.toUpperCase(),name.toUpperCase(),user,startDateTime,finalDateTime, pageable);
         }
         if(conclusion != null && !conclusion.equals("TODOS")) {
-            return medicineRepository.findCustomMedicineItemsWithPagination(name.toUpperCase(), user, Boolean.parseBoolean(conclusion), pageable);
+            return medicineRepository.findCustomMedicineItemsWithPagination(name.toUpperCase(),name.toUpperCase(), user, Boolean.parseBoolean(conclusion), pageable);
         }
-        return medicineRepository.findCustomMedicineItemsWithPagination(name.toUpperCase(), user, pageable);
+        return medicineRepository.findCustomMedicineItemsWithPagination(name.toUpperCase(), name.toUpperCase(),user, pageable);
     }
 
     private Sort generateSort(FieldSortMedicineItem fieldSort,

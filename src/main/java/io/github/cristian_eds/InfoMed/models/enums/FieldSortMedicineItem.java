@@ -6,7 +6,8 @@ public enum FieldSortMedicineItem {
     NUMBER("mi.medicineItemSequence"),
     FREQUENCE("m.frequencyHours"),
     DAY_HOUR("mi.dayHour"),
-    CONCLUSION("mi.conclusion");
+    CONCLUSION("mi.conclusion"),
+    PERSON("m.person.name");
 
     private final String decription;
 
