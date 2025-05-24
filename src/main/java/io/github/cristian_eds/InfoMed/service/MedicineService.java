@@ -56,14 +56,14 @@ public class MedicineService {
     }
 
     public Page<MedicineResponseDTO> findAll(String name, int actualPage, int sizePage) {
-        Specification<Medicine> specs = Specification.where(
-                (root, query, criteriaBuilder) ->
-                        criteriaBuilder.conjunction());
-
-        if (name != null) specs = specs.and(MedicineSpecs.nameLike(name));
+        Specification<Medicine> specs = Specification.where(null);
 
         User user = securityService.getAuthenticatedUser();
         specs = specs.and(MedicineSpecs.userEquals(user));
+
+        if (name != null) {
+            specs = specs.and(MedicineSpecs.nameOrPersonNameLike(name));
+        }
 
         Pageable pageable = PageRequest.of(actualPage,sizePage);
 
