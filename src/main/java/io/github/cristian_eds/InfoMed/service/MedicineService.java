@@ -39,7 +39,7 @@ public class MedicineService {
         User user = securityService.getAuthenticatedUser();
         medicine.setUser(user);
 
-        Person person = personService.findById(medicine.getPerson().getId()).orElseGet(() -> null);
+        Person person = personService.findById(medicine.getPerson().getId());
         medicine.setPerson(person);
 
         Medicine medicineSaved =  medicineRepository.save(medicine);
@@ -79,7 +79,7 @@ public class MedicineService {
         Medicine medicine = findById(id).orElseThrow(() -> new NoSuchElementException("No Medicine found with this Id"));
         medicine.setName(medicineUpdateDTO.name());
         if(medicineUpdateDTO.idPerson() != null) {
-            Person person = personService.findById(UUID.fromString(medicineUpdateDTO.idPerson())).orElseThrow( () -> new NoSuchElementException("Person not found"));
+            Person person = personService.findById(UUID.fromString(medicineUpdateDTO.idPerson()));
             if (!person.equals(medicine.getPerson())) {
                 medicine.setPerson(person);
             }
@@ -92,6 +92,10 @@ public class MedicineService {
                 MedicineResponseDTO::fromEntity).toList();
 
         return new PageImpl<>(listMedicinesDTOs, pageable, medicinesPage.getTotalElements());
+    }
+
+    public List<Medicine> findByPerson(Person person) {
+        return medicineRepository.findByPerson(person);
     }
 
 }

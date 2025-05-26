@@ -2,7 +2,6 @@ package io.github.cristian_eds.InfoMed.controller;
 
 import io.github.cristian_eds.InfoMed.controller.common.GenerateURILocation;
 import io.github.cristian_eds.InfoMed.controller.dto.CreateMedicineDTO;
-import io.github.cristian_eds.InfoMed.controller.dto.CustomMedicineItemDTO;
 import io.github.cristian_eds.InfoMed.controller.dto.MedicineResponseDTO;
 import io.github.cristian_eds.InfoMed.controller.dto.MedicineUpdateDTO;
 import io.github.cristian_eds.InfoMed.models.Medicine;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @RestController

@@ -6,7 +6,6 @@ import io.github.cristian_eds.InfoMed.models.Person;
 import io.github.cristian_eds.InfoMed.service.PersonService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -38,9 +37,7 @@ public class PersonController {
     @GetMapping("{id}")
     public ResponseEntity<PersonResponseDTO> getById(@PathVariable("id") String id) {
         UUID uuid = UUID.fromString(id);
-        return personService.findById(uuid).map(
-                person -> ResponseEntity.ok(PersonResponseDTO.fromEntity(person)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok(PersonResponseDTO.fromEntity(personService.findById(uuid)));
     }
 
     @PutMapping("{id}")
@@ -50,4 +47,5 @@ public class PersonController {
         UUID uuid = UUID.fromString(id);
         return  ResponseEntity.ok(PersonResponseDTO.fromEntity(personService.update(uuid,updatePersonDTO)));
     }
+
 }
