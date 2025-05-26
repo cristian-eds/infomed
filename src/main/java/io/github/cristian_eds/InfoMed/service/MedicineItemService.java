@@ -159,5 +159,9 @@ public class MedicineItemService {
         return medicineItemRepository.findFirstByDayHourGreaterThanEqualNowByPerson(user,person);
     }
 
+    public Optional<MedicineItem> findNextItemPendingByMedicine(Medicine medicine) {
+        User user = securityService.getAuthenticatedUser();
+        return medicineItemRepository.findNextPendingForMedicine(user,medicine.getPerson(), medicine);
+    }
 
 }

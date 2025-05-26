@@ -21,4 +21,12 @@ public interface MedicineItemRepository extends JpaRepository<MedicineItem, UUID
     Optional<MedicineItem> findFirstByDayHourGreaterThanEqualNowByPerson(@Param("user") User user, @Param("person") Person person);
 
     List<MedicineItem> findByMedicine(Medicine medicine);
+
+    @Query("SELECT mi FROM MedicineItem mi " +
+            "JOIN mi.medicine m " +
+            "WHERE mi.dayHour >= CURRENT_TIMESTAMP AND m.user = :user " +
+            "AND mi.conclusion = false AND m.person = :person " +
+            "AND mi.medicine = :medicine "+
+            "ORDER BY mi.dayHour ASC LIMIT 1")
+    Optional<MedicineItem> findNextPendingForMedicine(@Param("user") User user, @Param("person") Person person,@Param("medicine") Medicine medicine);
 }
