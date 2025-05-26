@@ -6,11 +6,14 @@ import io.github.cristian_eds.InfoMed.models.Person;
 import io.github.cristian_eds.InfoMed.models.User;
 import io.github.cristian_eds.InfoMed.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -50,5 +53,13 @@ public class PersonService {
 
     public Optional<Person> findById(UUID id) {
         return personRepository.findByUserFatherAndId(securityService.getAuthenticatedUser(),id);
+    }
+
+    public Person update(UUID id, UpdatePersonDTO updatePersonDTO) {
+        Person person = findById(id).orElseThrow(() -> new NoSuchElementException("Person not found"));
+        person.setName(updatePersonDTO.name());
+        person.setPhone(updatePersonDTO.phone());
+        person.setBirthDate(updatePersonDTO.birthDate());
+        return personRepository.save(person);
     }
 }
