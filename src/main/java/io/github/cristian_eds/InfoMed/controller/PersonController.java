@@ -3,6 +3,7 @@ package io.github.cristian_eds.InfoMed.controller;
 import io.github.cristian_eds.InfoMed.controller.common.GenerateURILocation;
 import io.github.cristian_eds.InfoMed.controller.dto.*;
 import io.github.cristian_eds.InfoMed.models.Person;
+import io.github.cristian_eds.InfoMed.service.MedicineService;
 import io.github.cristian_eds.InfoMed.service.PersonService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -20,6 +22,7 @@ import java.util.UUID;
 public class PersonController {
 
     private final PersonService personService;
+    private final MedicineService medicineService;
 
     @PostMapping
     public ResponseEntity<PersonResponseDTO> create(@RequestBody @Valid CreatePersonDTO person){
@@ -46,6 +49,12 @@ public class PersonController {
             @RequestBody UpdatePersonDTO updatePersonDTO) {
         UUID uuid = UUID.fromString(id);
         return  ResponseEntity.ok(PersonResponseDTO.fromEntity(personService.update(uuid,updatePersonDTO)));
+    }
+
+    @GetMapping("/{id}/medicines")
+    public ResponseEntity<List<MedicinePersonDTO>> getMedicines(@PathVariable("id") String id) {
+        UUID uuid = UUID.fromString(id);
+        return ResponseEntity.ok(personService.getMedicines(uuid, medicineService));
     }
 
 }

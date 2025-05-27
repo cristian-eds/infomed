@@ -61,5 +61,5 @@ public interface MedicineRepository extends JpaRepository<Medicine, UUID>, JpaSp
             @Param("finalDateTime") LocalDateTime finalDateTime,
             org.springframework.data.domain.Pageable pageable);
 
-    List<Medicine> findByPerson(Person person);
+    List<Medicine> findByPersonAndUser(Person person, User user);
 }

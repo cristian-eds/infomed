@@ -94,8 +94,8 @@ public class MedicineService {
         return new PageImpl<>(listMedicinesDTOs, pageable, medicinesPage.getTotalElements());
     }
 
-    public List<Medicine> findByPerson(Person person) {
-        return medicineRepository.findByPerson(person);
+    public List<Medicine> findByPerson(Person person,User user) {
+        return medicineRepository.findByPersonAndUser(person,user);
     }
 
 }

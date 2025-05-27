@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -60,4 +61,19 @@ public class PersonService {
         person.setBirthDate(updatePersonDTO.birthDate());
         return personRepository.save(person);
     }
+
+    @Transactional
+    public List<MedicinePersonDTO> getMedicines(UUID id, final MedicineService medicineService) {
+        Person person = findById(id);
+        User user =  securityService.getAuthenticatedUser();
+        List<Medicine> medicines = medicineService.findByPerson(person, user);
+
+        return medicines.stream().map(medicine -> {
+            CustomMedicineItemDTO itemDTO =
+                    medicineItemService.findNextItemPendingByMedicine(medicine)
+                            .map(CustomMedicineItemDTO::fromMedicineItem).orElseGet(() -> null);
+            return MedicinePersonDTO.fromEntityAndNextItem(medicine, itemDTO);
+        }).toList();
+    }
+
 }
