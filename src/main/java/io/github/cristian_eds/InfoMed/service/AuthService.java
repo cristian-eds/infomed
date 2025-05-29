@@ -5,8 +5,6 @@ import io.github.cristian_eds.InfoMed.exception.custom.InvalidLoginException;
 import io.github.cristian_eds.InfoMed.models.User;
 import io.github.cristian_eds.InfoMed.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.antlr.v4.runtime.Token;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;

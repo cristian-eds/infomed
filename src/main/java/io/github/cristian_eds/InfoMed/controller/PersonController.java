@@ -57,4 +57,11 @@ public class PersonController {
         return ResponseEntity.ok(personService.getMedicines(uuid, medicineService));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMedicine(@PathVariable("id") String id) {
+        UUID uuid = UUID.fromString(id);
+        personService.delete(uuid);
+        return ResponseEntity.noContent().build();
+    }
+
 }

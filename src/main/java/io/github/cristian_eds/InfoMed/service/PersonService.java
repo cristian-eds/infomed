@@ -76,4 +76,8 @@ public class PersonService {
         }).toList();
     }
 
+    public void delete(UUID uuid) {
+        Person person = findById(uuid);
+        personRepository.delete(person);
+    }
 }
