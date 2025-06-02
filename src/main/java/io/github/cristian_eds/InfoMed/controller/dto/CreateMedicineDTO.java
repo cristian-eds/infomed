@@ -16,19 +16,21 @@ public record CreateMedicineDTO(
         Double frequencyHours,
         @NotNull(message = "Insert a valid datetime")
         String initialDateTime,
-        @NotNull(message = "Insert a valid person")
         String idPerson
 
 ) {
 
     public static Medicine toEntity(CreateMedicineDTO medicineDTO) {
         Medicine medicine = new Medicine();
-        Person person = new Person();
-        person.setId(UUID.fromString(medicineDTO.idPerson));
         medicine.setName(medicineDTO.name());
         medicine.setFrequencyHours(medicineDTO.frequencyHours());
         medicine.setTotalDays(medicineDTO.totalDays());
-        medicine.setPerson(person);
+
+        if (medicineDTO.idPerson() != null && medicineDTO.idPerson().length() > 1) {
+            Person person = new Person();
+            person.setId(UUID.fromString(medicineDTO.idPerson()));
+            medicine.setPerson(person);
+        }
         return medicine;
     }
 }

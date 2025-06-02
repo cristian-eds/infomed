@@ -39,8 +39,10 @@ public class MedicineService {
         User user = securityService.getAuthenticatedUser();
         medicine.setUser(user);
 
-        Person person = personService.findById(medicine.getPerson().getId());
-        medicine.setPerson(person);
+        if (medicine.getPerson() != null) {
+            Person person = personService.findById(medicine.getPerson().getId());
+            medicine.setPerson(person);
+        }
 
         Medicine medicineSaved =  medicineRepository.save(medicine);
 
