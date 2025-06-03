@@ -82,7 +82,7 @@ public class MedicineItemService {
         Medicine medicine = medicineItem.getMedicine();
         medicineItemRepository.delete(medicineItem);
 
-        List<MedicineItem> list = medicineItemRepository.findByMedicine(medicine);
+        List<MedicineItem> list = medicineItemRepository.findByMedicineOrderByMedicineItemSequence(medicine);
         if(list.isEmpty()) {
             medicineRepository.delete(medicine);
             return;
