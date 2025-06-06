@@ -31,6 +31,13 @@ public class PersonService {
         return  personRepository.save(person);
     }
 
+    public void createWhenRegistering(User user) {
+        Person person = new Person();
+        person.setName(user.getName());
+        person.setUserFather(user);
+        personRepository.save(person);
+    }
+
     public PagedResponseDTO<CustomPersonResponseDTO> findAll(Pageable pageable) {
         Page<Person> pageResult = personRepository.findByUserFather(securityService.getAuthenticatedUser(), pageable);
         List<CustomPersonResponseDTO> responseDTOList = pageResult.getContent().stream().map(

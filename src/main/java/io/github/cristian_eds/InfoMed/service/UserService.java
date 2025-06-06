@@ -1,6 +1,7 @@
 package io.github.cristian_eds.InfoMed.service;
 
 import io.github.cristian_eds.InfoMed.controller.dto.ChangeUserPasswordDTO;
+import io.github.cristian_eds.InfoMed.controller.dto.CreatePersonDTO;
 import io.github.cristian_eds.InfoMed.controller.dto.UserUpdateDTO;
 import io.github.cristian_eds.InfoMed.exception.custom.EmailAlreadyExistsException;
 import io.github.cristian_eds.InfoMed.exception.custom.IncorrectPasswordException;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -22,12 +24,18 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PersonService personService;
 
+    @Transactional
     public User createUser(User user) {
         Optional<User> userFound = findByEmail(user.getEmail());
         if(userFound.isPresent()) throw new EmailAlreadyExistsException("There is already a user with this email address.");
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        User userSaved =  userRepository.save(user);
+
+        personService.createWhenRegistering(user);
+        return userSaved;
     }
 
     public User findById(UUID id) {
