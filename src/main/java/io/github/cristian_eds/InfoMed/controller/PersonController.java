@@ -64,4 +64,10 @@ public class PersonController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/{id}/accessCode")
+    public ResponseEntity<AccessCodeDTO> generateAccessCode(@PathVariable("id") String id) {
+        UUID uuid = UUID.fromString(id);
+        return ResponseEntity.ok(new AccessCodeDTO(personService.generateCode(uuid)));
+    }
+
 }

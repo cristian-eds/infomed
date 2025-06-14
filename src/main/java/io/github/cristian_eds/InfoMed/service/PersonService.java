@@ -23,6 +23,7 @@ public class PersonService {
     private final PersonRepository personRepository;
     private final SecurityService securityService;
     private final MedicineItemService medicineItemService;
+    private final AccesCodeService accesCodeService;
 
     public Person save(CreatePersonDTO personDto) {
         User user =  securityService.getAuthenticatedUser();
@@ -86,5 +87,23 @@ public class PersonService {
     public void delete(UUID uuid) {
         Person person = findById(uuid);
         personRepository.delete(person);
+    }
+
+    @Transactional
+    public String generateCode(UUID uuid) {
+        Person person = findById(uuid);
+        String code;
+        do {
+            code = accesCodeService.generateCode();
+        } while (verifyCodeAlreadyExists(code));
+
+        person.setAccessCode(code);
+        personRepository.save(person);
+
+        return code;
+    }
+
+    private boolean verifyCodeAlreadyExists(String accessCode) {
+        return personRepository.findByAccessCode(accessCode).isPresent();
     }
 }
