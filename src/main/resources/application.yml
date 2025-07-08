@@ -15,8 +15,15 @@ spring:
       ddl-auto: none
     properties:
       hibernate.format_sql: true
+  web:
+    resources:
+      static-locations:
+        - classpath:/static/
+        - file:uploads/
 
 api:
   security:
     token:
       secret: ${JWT_SECRET:my-secret}
+
+
