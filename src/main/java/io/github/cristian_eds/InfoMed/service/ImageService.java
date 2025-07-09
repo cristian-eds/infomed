@@ -5,10 +5,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -16,9 +19,9 @@ import java.util.UUID;
 public class ImageService {
 
     private final PersonService personService;
-    private static final String UPLOAD_DIR = "uploads/images/person/";
+    private static final String UPLOAD_DIR = "src/main/resources/static/images/person/";
 
-    public String upload(MultipartFile file, String personId) {
+    public void upload(MultipartFile file, String personId) {
         Path uploadPath = Paths.get(UPLOAD_DIR);
         createUploadDirIfNotExists(uploadPath);
 
@@ -33,8 +36,6 @@ public class ImageService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        return imagePath.toString();
     }
 
     private void createUploadDirIfNotExists(Path uploadPath) {
@@ -54,5 +55,33 @@ public class ImageService {
         }
         return personId.concat(fileExtension);
     }
+
+
+    public Optional<byte[]> getImage(String idImagePerson) {
+        Optional<File> file = verifyIfImageExists(idImagePerson);
+        if(file.isPresent()) {
+            try {
+                return Optional.of(Files.readAllBytes(file.get().toPath()));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return Optional.empty();
+
+    }
+
+    private Optional<File> verifyIfImageExists(String idImagePerson){
+        File file = new File(UPLOAD_DIR);
+        if(file.exists() && file.isDirectory()) {
+            File[] files = file.listFiles();
+            for(File fileInDirectory : files) {
+                String substring = fileInDirectory.getName().substring(0, fileInDirectory.getName().lastIndexOf("."));
+                if(substring.equals(idImagePerson)) return Optional.of(fileInDirectory);
+            }
+
+        }
+        return Optional.empty();
+    }
+
 
 }

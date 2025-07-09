@@ -31,6 +31,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers("/users").permitAll();
                     authorize.requestMatchers("/auth/login").permitAll();
+                    authorize.requestMatchers("/images/**").permitAll();
                     authorize.anyRequest().authenticated();
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
