@@ -3,6 +3,7 @@ package io.github.cristian_eds.InfoMed.controller;
 import io.github.cristian_eds.InfoMed.controller.common.GenerateURILocation;
 import io.github.cristian_eds.InfoMed.controller.dto.*;
 import io.github.cristian_eds.InfoMed.models.Person;
+import io.github.cristian_eds.InfoMed.service.ImageService;
 import io.github.cristian_eds.InfoMed.service.MedicineService;
 import io.github.cristian_eds.InfoMed.service.PersonService;
 import jakarta.validation.Valid;
@@ -11,8 +12,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,10 +26,16 @@ public class PersonController {
 
     private final PersonService personService;
     private final MedicineService medicineService;
+    private final ImageService imageService;
 
     @PostMapping
-    public ResponseEntity<PersonResponseDTO> create(@RequestBody @Valid CreatePersonDTO person){
-        Person personSaved = personService.save(person);
+    public ResponseEntity<PersonResponseDTO> create(
+            @RequestParam String name,
+            @RequestParam(required = false) String phone,
+            @RequestParam(required = false) LocalDate birthDate,
+            @RequestParam(required = false, value = "file") MultipartFile file){
+        Person personSaved = personService.save(new CreatePersonDTO(name, birthDate, phone));
+        if (!file.isEmpty()) imageService.upload(file, personSaved.getId().toString());
         URI location = GenerateURILocation.generateURI(personSaved.getId());
         return ResponseEntity.created(location).body(PersonResponseDTO.fromEntity(personSaved));
     }
