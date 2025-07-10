@@ -26,6 +26,8 @@ public class Person {
 
     private String phone;
 
+    private String imageUrl;
+
     @ManyToOne
     @JoinColumn(name = "id_user_father")
     private User userFather;

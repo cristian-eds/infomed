@@ -9,7 +9,8 @@ public record CreatePersonDTO (
         @NotBlank(message = "Insert a valid name")
         String name,
         LocalDate birthDate,
-        String phone
+        String phone,
+        String imageUrl
 ){
 
     public static Person toEntity(CreatePersonDTO dto) {
@@ -17,6 +18,7 @@ public record CreatePersonDTO (
         person.setName(dto.name());
         person.setPhone(dto.phone());
         person.setBirthDate(dto.birthDate());
+        person.setImageUrl(dto.imageUrl);
         return person;
     }
 }

@@ -21,7 +21,7 @@ public class ImageService {
     private final PersonService personService;
     private static final String UPLOAD_DIR = "src/main/resources/static/images/person/";
 
-    public void upload(MultipartFile file, String personId) {
+    public String upload(MultipartFile file, String personId) {
         Path uploadPath = Paths.get(UPLOAD_DIR);
         createUploadDirIfNotExists(uploadPath);
 
@@ -33,6 +33,7 @@ public class ImageService {
         try {
             Files.deleteIfExists(imagePath);
             Files.copy(file.getInputStream(), imagePath);
+            return "/image/"+personId;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -78,7 +79,6 @@ public class ImageService {
                 String substring = fileInDirectory.getName().substring(0, fileInDirectory.getName().lastIndexOf("."));
                 if(substring.equals(idImagePerson)) return Optional.of(fileInDirectory);
             }
-
         }
         return Optional.empty();
     }

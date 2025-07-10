@@ -10,7 +10,8 @@ public record PersonResponseDTO (
         String name,
         String birthDate,
         String phone,
-        String accessCode
+        String accessCode,
+        String imageUrl
 ) {
 
     public static PersonResponseDTO fromEntity(Person person) {
@@ -20,6 +21,7 @@ public record PersonResponseDTO (
                         person.getName(),
                         person.getBirthDate() != null ? person.getBirthDate().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")): "",
                         person.getPhone(),
-                        person.getAccessCode());
+                        person.getAccessCode(),
+                person.getImageUrl());
     }
 }

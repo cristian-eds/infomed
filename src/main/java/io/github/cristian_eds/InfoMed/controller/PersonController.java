@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,13 +30,18 @@ public class PersonController {
     private final ImageService imageService;
 
     @PostMapping
+    @Transactional
     public ResponseEntity<PersonResponseDTO> create(
             @RequestParam String name,
             @RequestParam(required = false) String phone,
             @RequestParam(required = false) LocalDate birthDate,
             @RequestParam(required = false, value = "file") MultipartFile file){
-        Person personSaved = personService.save(new CreatePersonDTO(name, birthDate, phone));
-        if (!file.isEmpty()) imageService.upload(file, personSaved.getId().toString());
+        Person personSaved = personService.save(new CreatePersonDTO(name, birthDate, phone,""));
+        if (!file.isEmpty()) {
+            String imageUrl = imageService.upload(file, personSaved.getId().toString());
+            personSaved.setImageUrl(imageUrl);
+        };
+
         URI location = GenerateURILocation.generateURI(personSaved.getId());
         return ResponseEntity.created(location).body(PersonResponseDTO.fromEntity(personSaved));
     }
@@ -49,6 +55,7 @@ public class PersonController {
     @GetMapping("{id}")
     public ResponseEntity<PersonResponseDTO> getById(@PathVariable("id") String id) {
         UUID uuid = UUID.fromString(id);
+        PersonResponseDTO.fromEntity(personService.findById(uuid));
         return ResponseEntity.ok(PersonResponseDTO.fromEntity(personService.findById(uuid)));
     }
 
