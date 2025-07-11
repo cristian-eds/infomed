@@ -1,6 +1,6 @@
 package io.github.cristian_eds.InfoMed.service;
 
-import io.github.cristian_eds.InfoMed.models.Person;
+import io.github.cristian_eds.InfoMed.exception.custom.FileOperationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,22 +10,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class ImageService {
 
-    private final PersonService personService;
     private static final String UPLOAD_DIR = "src/main/resources/static/images/person/";
 
     public String upload(MultipartFile file, String personId) {
         Path uploadPath = Paths.get(UPLOAD_DIR);
         createUploadDirIfNotExists(uploadPath);
-
-        personService.findById(UUID.fromString(personId));
 
         String imageName = generateFileImageName(file.getOriginalFilename(), personId);
         Path imagePath = uploadPath.resolve(imageName);
@@ -35,7 +30,7 @@ public class ImageService {
             Files.copy(file.getInputStream(), imagePath);
             return "/image/"+personId;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new FileOperationException(e.getMessage());
         }
     }
 
@@ -44,7 +39,7 @@ public class ImageService {
             try {
                 Files.createDirectories(uploadPath);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new FileOperationException(e.getMessage());
             }
         }
     }
@@ -64,7 +59,7 @@ public class ImageService {
             try {
                 return Optional.of(Files.readAllBytes(file.get().toPath()));
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new FileOperationException(e.getMessage());
             }
         }
         return Optional.empty();
@@ -81,6 +76,19 @@ public class ImageService {
             }
         }
         return Optional.empty();
+    }
+
+    public void deleteImageByIdName(String idName) {
+        Optional<File> file = verifyIfImageExists(idName);
+        if(file.isPresent()) {
+            File file1 = file.get();
+            try {
+                Files.deleteIfExists(file1.toPath());
+            } catch (IOException e) {
+                throw new FileOperationException(e.getMessage());
+            }
+        }
+
     }
 
 

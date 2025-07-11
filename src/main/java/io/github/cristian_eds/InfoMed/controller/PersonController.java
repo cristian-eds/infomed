@@ -37,7 +37,7 @@ public class PersonController {
             @RequestParam(required = false) LocalDate birthDate,
             @RequestParam(required = false, value = "file") MultipartFile file){
         Person personSaved = personService.save(new CreatePersonDTO(name, birthDate, phone,""));
-        if (!file.isEmpty()) {
+        if (!file.isEmpty() && personSaved.getId() != null) {
             String imageUrl = imageService.upload(file, personSaved.getId().toString());
             personSaved.setImageUrl(imageUrl);
         };
@@ -74,7 +74,7 @@ public class PersonController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMedicine(@PathVariable("id") String id) {
+    public ResponseEntity<Void> deletePerson(@PathVariable("id") String id) {
         UUID uuid = UUID.fromString(id);
         personService.delete(uuid);
         return ResponseEntity.noContent().build();

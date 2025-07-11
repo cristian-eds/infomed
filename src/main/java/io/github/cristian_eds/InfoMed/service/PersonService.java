@@ -24,6 +24,7 @@ public class PersonService {
     private final SecurityService securityService;
     private final MedicineItemService medicineItemService;
     private final AccesCodeService accesCodeService;
+    private final ImageService imageService;
 
     public Person save(CreatePersonDTO personDto) {
         User user =  securityService.getAuthenticatedUser();
@@ -84,8 +85,10 @@ public class PersonService {
         }).toList();
     }
 
+    @Transactional
     public void delete(UUID uuid) {
         Person person = findById(uuid);
+        imageService.deleteImageByIdName(uuid.toString());
         personRepository.delete(person);
     }
 
