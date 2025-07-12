@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -88,7 +89,7 @@ public class PersonService {
     @Transactional
     public void delete(UUID uuid) {
         Person person = findById(uuid);
-        imageService.deleteImageByIdName(uuid.toString());
+        imageService.deleteImageByIdNameIfExists(uuid.toString());
         personRepository.delete(person);
     }
 
@@ -108,5 +109,16 @@ public class PersonService {
 
     private boolean verifyCodeAlreadyExists(String accessCode) {
         return personRepository.findByAccessCode(accessCode).isPresent();
+    }
+
+    @Transactional
+    public String updateImage(MultipartFile file, String id) {
+        UUID uuid = UUID.fromString(id);
+        Person personFounded = findById(uuid);
+        String pathImage = imageService.upload(file,id);
+        if(!pathImage.isEmpty()) {
+            personFounded.setImageUrl(pathImage);
+        }
+        return pathImage;
     }
 }

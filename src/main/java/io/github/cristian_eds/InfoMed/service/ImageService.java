@@ -26,7 +26,7 @@ public class ImageService {
         Path imagePath = uploadPath.resolve(imageName);
 
         try {
-            Files.deleteIfExists(imagePath);
+            deleteImageByIdNameIfExists(personId);
             Files.copy(file.getInputStream(), imagePath);
             return "/image/"+personId;
         } catch (IOException e) {
@@ -78,7 +78,7 @@ public class ImageService {
         return Optional.empty();
     }
 
-    public void deleteImageByIdName(String idName) {
+    public void deleteImageByIdNameIfExists(String idName) {
         Optional<File> file = verifyIfImageExists(idName);
         if(file.isPresent()) {
             File file1 = file.get();

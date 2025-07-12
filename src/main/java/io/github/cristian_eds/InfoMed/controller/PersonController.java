@@ -86,4 +86,11 @@ public class PersonController {
         return ResponseEntity.ok(new AccessCodeDTO(personService.generateCode(uuid)));
     }
 
+    @PutMapping("/{id}/image")
+    public ResponseEntity<ImagePersonUrlDTO> updateImage(
+            @PathVariable("id") String id,
+            @RequestParam(required = true, value = "file") MultipartFile file) {
+        return ResponseEntity.ok(new ImagePersonUrlDTO(personService.updateImage(file, id)));
+    }
+
 }

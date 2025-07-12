@@ -1,5 +1,6 @@
 package io.github.cristian_eds.InfoMed.controller;
 
+import io.github.cristian_eds.InfoMed.controller.dto.ImagePersonUrlDTO;
 import io.github.cristian_eds.InfoMed.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
@@ -18,10 +19,9 @@ public class ImageController {
     private final ImageService imageService;
 
     @PostMapping
-    public ResponseEntity<Void> uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("personId") String personId) throws BadRequestException {
+    public ResponseEntity<ImagePersonUrlDTO> uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("personId") String personId) throws BadRequestException {
         if(file.isEmpty()) throw new BadRequestException("The file is empty.");
-        imageService.upload(file, personId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(new ImagePersonUrlDTO(imageService.upload(file, personId)));
     }
 
     @GetMapping(value = "{id}", produces = {
