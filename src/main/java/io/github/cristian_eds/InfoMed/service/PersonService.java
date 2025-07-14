@@ -121,4 +121,14 @@ public class PersonService {
         }
         return pathImage;
     }
+
+    @Transactional
+    public void deleteImage(String id) {
+        UUID uuid = UUID.fromString(id);
+        boolean deleted = imageService.deleteImageByIdNameIfExists(id);
+        if(deleted) {
+            Person personFounded = findById(uuid);
+            personFounded.setImageUrl(null);
+        }
+    }
 }

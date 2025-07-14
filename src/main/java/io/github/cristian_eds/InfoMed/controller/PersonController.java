@@ -93,4 +93,11 @@ public class PersonController {
         return ResponseEntity.ok(new ImagePersonUrlDTO(personService.updateImage(file, id)));
     }
 
+    @DeleteMapping("/{id}/image")
+    public ResponseEntity<Void> deleteImage(
+            @PathVariable("id") String id) {
+        personService.deleteImage(id);
+        return ResponseEntity.ok().build();
+    }
+
 }

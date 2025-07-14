@@ -78,17 +78,17 @@ public class ImageService {
         return Optional.empty();
     }
 
-    public void deleteImageByIdNameIfExists(String idName) {
+    public boolean deleteImageByIdNameIfExists(String idName) {
         Optional<File> file = verifyIfImageExists(idName);
         if(file.isPresent()) {
             File file1 = file.get();
             try {
-                Files.deleteIfExists(file1.toPath());
+                return Files.deleteIfExists(file1.toPath());
             } catch (IOException e) {
                 throw new FileOperationException(e.getMessage());
             }
         }
-
+        return false;
     }
 
 
