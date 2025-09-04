@@ -1,8 +1,12 @@
 package io.github.cristian_eds.InfoMed.service;
 
 import io.github.cristian_eds.InfoMed.controller.dto.TokenDTO;
+import io.github.cristian_eds.InfoMed.exception.custom.AccessCodeInvalidException;
 import io.github.cristian_eds.InfoMed.exception.custom.InvalidLoginException;
+import io.github.cristian_eds.InfoMed.models.Person;
 import io.github.cristian_eds.InfoMed.models.User;
+import io.github.cristian_eds.InfoMed.models.enums.Role;
+import io.github.cristian_eds.InfoMed.repository.PersonRepository;
 import io.github.cristian_eds.InfoMed.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final UserRepository userRepository;
+    private final PersonRepository personRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenService jwtTokenService;
 
@@ -23,7 +28,7 @@ public class AuthService {
 
         if (checkPasswordsMatches(password, user.getPassword())){
             var authUsernamePassword = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
-            return jwtTokenService.generateToken(user);
+            return jwtTokenService.generateToken(user, "");
         } else {
             throw new InvalidLoginException("Incorrect password.");
         }
@@ -31,5 +36,13 @@ public class AuthService {
 
     private boolean checkPasswordsMatches(String providedPassword, String encryptedPassword) {
         return passwordEncoder.matches(providedPassword, encryptedPassword);
+    }
+
+    public TokenDTO loginWithAccessCode(String accessCode) {
+        Person person = personRepository.findByAccessCode(accessCode).orElseThrow(() -> new AccessCodeInvalidException("Invalid Access Code."));
+        User temporaryUser = new User();
+        temporaryUser.setEmail(accessCode);
+        temporaryUser.setRole(Role.GUEST);
+        return jwtTokenService.generateToken(temporaryUser, accessCode);
     }
 }

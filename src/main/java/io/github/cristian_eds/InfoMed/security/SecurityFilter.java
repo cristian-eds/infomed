@@ -26,15 +26,14 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
         String token = recoveryToken(request);
-
         if(token != null) {
-            String email = jwtTokenService.validateToken(token);
-            User user = userRepository.findByEmail(email).orElse(null);
-            if(user != null){
-                var authentication = new UsernamePasswordAuthenticationToken(user,null,List.of(new SimpleGrantedAuthority(user.getRole().toString())));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+            String accessCode = jwtTokenService.validateClaimAccessCodeFromToken(token);
+            if(!accessCode.isEmpty()) {
+                authenticateTokenFromAccessCode(accessCode);
+            } else {
+                String email = jwtTokenService.validateToken(token);
+                authenticateNormalToken(email);
             }
         }
         filterChain.doFilter(request,response);
@@ -45,6 +44,17 @@ public class SecurityFilter extends OncePerRequestFilter {
         if(authHeader == null) return null;
 
         return authHeader.replace("Bearer ", "");
+    }
+
+    private void authenticateNormalToken(String email) {
+        User user = userRepository.findByEmail(email).orElse(null);
+        if(user != null){
+            var authentication = new UsernamePasswordAuthenticationToken(user,null,List.of(new SimpleGrantedAuthority(user.getRole().toString())));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+    }
+
+    private void authenticateTokenFromAccessCode(String acessCode) {
 
     }
 }

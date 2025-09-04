@@ -16,4 +16,5 @@ public interface PersonRepository extends JpaRepository<Person, UUID> {
     Optional<Person> findByUserFatherAndId(User user, UUID id);
 
     Optional<Person> findByAccessCode(String accessCode);
+
 }
