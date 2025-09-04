@@ -1,10 +1,7 @@
 package io.github.cristian_eds.InfoMed.exception;
 
 import io.github.cristian_eds.InfoMed.controller.dto.ResponseError;
-import io.github.cristian_eds.InfoMed.exception.custom.EmailAlreadyExistsException;
-import io.github.cristian_eds.InfoMed.exception.custom.FileOperationException;
-import io.github.cristian_eds.InfoMed.exception.custom.IncorrectPasswordException;
-import io.github.cristian_eds.InfoMed.exception.custom.InvalidLoginException;
+import io.github.cristian_eds.InfoMed.exception.custom.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -51,6 +48,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseError handleEmailDupicateRegister(EmailAlreadyExistsException e) {
         return new ResponseError(e.getMessage(), HttpStatus.CONFLICT.value());
+    }
+
+    @ExceptionHandler(AccessCodeInvalidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseError handleAccessCodeInvalid(AccessCodeInvalidException e) {
+        return new ResponseError(e.getMessage(), HttpStatus.BAD_REQUEST.value());
     }
 
     @ExceptionHandler(FileOperationException.class)
