@@ -61,7 +61,8 @@ public class MedicineService {
         Specification<Medicine> specs = Specification.where(null);
 
         User user = securityService.getAuthenticatedUser();
-        specs = specs.and(MedicineSpecs.userEquals(user));
+        System.out.println(user);
+        specs = specs.and(MedicineSpecs.userOrPersonAccessCodeLike(user, user.getName().toUpperCase()));
 
         if (name != null) {
             specs = specs.and(MedicineSpecs.nameOrPersonNameLike(name));

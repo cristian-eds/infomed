@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -130,5 +131,9 @@ public class PersonService {
             Person personFounded = findById(uuid);
             personFounded.setImageUrl(null);
         }
+    }
+
+    public Optional<Person> findByAccessCode(String accessCode) {
+        return personRepository.findByAccessCode(accessCode);
     }
 }

@@ -28,5 +28,7 @@ api:
   security:
     token:
       secret: ${JWT_SECRET:my-secret}
+  guest:
+    email: ${GUEST_EMAIL:guest@guest.com}
 
 

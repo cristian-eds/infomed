@@ -55,14 +55,14 @@ public class MedicineItemService {
             LocalDateTime startDateTime = LocalDateTime.parse(initialDate);
             LocalDateTime finalDateTime = LocalDateTime.parse(finalDate);
             if(conclusion != null) {
-                return medicineRepository.findCustomMedicineItemsWithPagination(name.toUpperCase(),name.toUpperCase(),user,Boolean.parseBoolean(conclusion),startDateTime,finalDateTime,pageable);
+                return medicineRepository.findCustomMedicineItemsWithPagination(name.toUpperCase(),name.toUpperCase(),user,user.getName(),Boolean.parseBoolean(conclusion),startDateTime,finalDateTime,pageable);
             }
-            return medicineRepository.findCustomMedicineItemsWithPagination(name.toUpperCase(),name.toUpperCase(),user,startDateTime,finalDateTime, pageable);
+            return medicineRepository.findCustomMedicineItemsWithPagination(name.toUpperCase(),name.toUpperCase(),user,user.getName(),startDateTime,finalDateTime, pageable);
         }
         if(conclusion != null && !conclusion.equals("TODOS")) {
-            return medicineRepository.findCustomMedicineItemsWithPagination(name.toUpperCase(),name.toUpperCase(), user, Boolean.parseBoolean(conclusion), pageable);
+            return medicineRepository.findCustomMedicineItemsWithPagination(name.toUpperCase(),name.toUpperCase(), user, user.getName(),Boolean.parseBoolean(conclusion), pageable);
         }
-        return medicineRepository.findCustomMedicineItemsWithPagination(name.toUpperCase(), name.toUpperCase(),user, pageable);
+        return medicineRepository.findCustomMedicineItemsWithPagination(name.toUpperCase(), name.toUpperCase(),user, user.getName(), pageable);
     }
 
     private Sort generateSort(FieldSortMedicineItem fieldSort,
@@ -147,7 +147,7 @@ public class MedicineItemService {
 
     public Optional<MedicineItem> findNextMedicine() {
         User user = securityService.getAuthenticatedUser();
-        return medicineItemRepository.findFirstByDayHourGreaterThanEqualNow(user);
+        return medicineItemRepository.findFirstByDayHourGreaterThanEqualNow(user.getName(), user);
     }
 
     private int calculateTotalItens(double totalDays, double frequencyHour) {

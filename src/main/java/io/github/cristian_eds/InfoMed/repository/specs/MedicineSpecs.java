@@ -49,4 +49,17 @@ public class MedicineSpecs {
             return cb.or(namePredicate,personNamePredicate);
         };
     }
+
+    public static Specification<Medicine> userOrPersonAccessCodeLike(User user,String accessCode) {
+        return (root, query, cb) -> {
+            Join<Medicine, Person > personJoin = root.join("person", JoinType.LEFT);
+            Predicate namePredicate = cb.equal(root.get("user"),user);
+
+            Predicate personNamePredicate = cb.like(
+                    cb.upper(personJoin.get("accessCode")),
+                    "%" + accessCode.toUpperCase() + "%"
+            );
+            return cb.or(namePredicate,personNamePredicate);
+        };
+    }
 }

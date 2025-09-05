@@ -14,8 +14,8 @@ import java.util.UUID;
 
 public interface MedicineItemRepository extends JpaRepository<MedicineItem, UUID> {
 
-    @Query("SELECT mi FROM MedicineItem mi JOIN mi.medicine m  WHERE mi.dayHour >= CURRENT_TIMESTAMP AND m.user = :user AND mi.conclusion = false ORDER BY mi.dayHour ASC LIMIT 1")
-    Optional<MedicineItem> findFirstByDayHourGreaterThanEqualNow(@Param("user") User user);
+    @Query("SELECT mi FROM MedicineItem mi JOIN mi.medicine m JOIN m.person p WHERE (p.accessCode = :accessCode OR m.user = :user) AND mi.dayHour >= CURRENT_TIMESTAMP AND  mi.conclusion = false ORDER BY mi.dayHour ASC LIMIT 1")
+    Optional<MedicineItem> findFirstByDayHourGreaterThanEqualNow(@Param("accessCode") String accessCode, @Param("user") User user);
 
     @Query("SELECT mi FROM MedicineItem mi JOIN mi.medicine m WHERE mi.dayHour >= CURRENT_TIMESTAMP AND m.user = :user AND mi.conclusion = false AND m.person = :person ORDER BY mi.dayHour ASC LIMIT 1")
     Optional<MedicineItem> findFirstByDayHourGreaterThanEqualNowByPerson(@Param("user") User user, @Param("person") Person person);
