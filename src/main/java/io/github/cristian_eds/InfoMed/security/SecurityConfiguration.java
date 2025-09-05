@@ -1,8 +1,10 @@
 package io.github.cristian_eds.InfoMed.security;
 
+import io.github.cristian_eds.InfoMed.models.enums.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -31,7 +33,15 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers("/users").permitAll();
                     authorize.requestMatchers("/auth/**").permitAll();
-                    authorize.requestMatchers("/image/**").permitAll();
+                    authorize.requestMatchers(HttpMethod.PUT,"/medicine/item/{id}/status").authenticated();
+                    authorize.requestMatchers(HttpMethod.POST,"/medicine/item/**").hasAnyRole(Role.ADMIN.toString(),Role.USER.toString());
+                    authorize.requestMatchers(HttpMethod.DELETE,"/medicine/item/**").hasAnyRole(Role.ADMIN.toString(),Role.USER.toString());
+                    authorize.requestMatchers(HttpMethod.POST,"/medicine/**").hasAnyRole(Role.ADMIN.toString(),Role.USER.toString());
+                    authorize.requestMatchers(HttpMethod.PUT,"/medicine/**").hasAnyRole(Role.ADMIN.toString(),Role.USER.toString());
+                    authorize.requestMatchers(HttpMethod.DELETE,"/medicine/**").hasAnyRole(Role.ADMIN.toString(),Role.USER.toString());
+                    authorize.requestMatchers(HttpMethod.GET,"/person/**").authenticated();
+                    authorize.requestMatchers("/person/**").hasRole(Role.ADMIN.toString());
+                    authorize.requestMatchers("/image/**").hasAnyRole(Role.ADMIN.toString(),Role.USER.toString());
                     authorize.anyRequest().authenticated();
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
